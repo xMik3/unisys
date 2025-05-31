@@ -1,0 +1,40 @@
+services:
+  backend:
+    build: .
+    ports: 
+      - "3000:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DB_HOST: "database"
+      DB_USER: "root"
+      DB_PASSWORD: "1234"
+      DB_NAME: "universityBranch"
+    volumes:
+      - .:/app
+    networks:
+      - backend
+
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "universityBranch"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      start_period: 10s
+      interval: 10s
+      retries: 2
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./db/universityBranch.sql:/docker-entrypoint-initdb.d/universityBranch.sql
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+
