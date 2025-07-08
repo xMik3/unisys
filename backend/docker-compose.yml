@@ -1,26 +1,21 @@
 services:
   backend:
     build: .
+    env_file:
+      - .env
     ports: 
-      - "3000:3000"
+      - ${PORT}:${PORT}
     depends_on:
       database:
         condition: service_healthy
-    environment:
-      DB_HOST: "database"
-      DB_USER: "root"
-      DB_PASSWORD: "1234"
-      DB_NAME: "universityBranch"
-    volumes:
-      - .:/app
     networks:
       - backend
 
   database:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: "1234"
-      MYSQL_DATABASE: "universityBranch"
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       start_period: 10s
