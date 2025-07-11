@@ -1,8 +1,8 @@
-import {userSchema,parameterSchema} from "../validation/validationSchema.js";
+import {courseSchema, loginSchema,parameterSchema} from "../validation/validationSchema.js";
 
-export function validateLoginInputs(req,res,next){
+export function validateLoginInput(req,res,next){
   
-  const {error,value} = userSchema.validate(req.body);
+  const {error,value} = loginSchema.validate(req.body);
   
   if(error) return res.status(401).json({ error: "Invalid Inputs"});
 
@@ -28,6 +28,14 @@ export function validateParameters(req,res,next){
     
     if(error) return res.status(401).json({ error: "Invalid Inputs"});
   }
+
+  next();
+}
+
+export function validateCourseInput(req,res,next){
+  const {error,value} = courseSchema.validate(req.body);
+
+  if(error) return res.status(401).json({ error: "Invalid Inputs"});
 
   next();
 }

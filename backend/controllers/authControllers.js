@@ -11,14 +11,14 @@ export function login(req,res){
   let userPWD = req.body.userPWD;
   let userType = req.body.userType;
 
-  if(userType === "secretary" && userPWD === process.env.SECRETARY_PWD && userID === "000000"){
+  if(userType === "secretary" && userPWD === process.env.SECRETARY_PWD && userID === 0){
     return res.json(generateToken(userID,userType));
   }
   else if(userType === "student"){
-    query = `SELECT * FROM Students WHERE (SID = ?)`;
+    query = `SELECT * FROM Students WHERE (SID = ?);`;
   }
   else if(userType === "teacher"){
-    query = `SELECT * FROM Teachers WHERE (TID = ?)`;
+    query = `SELECT * FROM Teachers WHERE (TID = ?);`;
   }
   else{
     return res.status(400).json({ error: "Invalid user type" });

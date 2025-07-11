@@ -8,10 +8,10 @@ export function getRegisteredCourses(req,res){
   FROM Students s
   JOIN Attends a ON s.SID = a.SID
   JOIN Courses c ON a.CID = c.CID
-  WHERE s.SID = ?`;
+  WHERE s.SID = ?;`;
 
   db.query(query, [userID], (error,results)=>{
-    if(error) return res.status(500).send("Database error");
+    if(error) return res.status(500).json({ error : "Database error" });
 
     return res.status(200).json(results);
   });
@@ -21,26 +21,37 @@ export function registerCourse(req,res){
   let courseID = req.params.courseID;
   let userID = req.userID;
 
-  let query = `INSERT INTO Attends (SID, CID, GRADE) VALUES (?, ?, NULL)`;
+  let courseQuery =
+  `SELECT * FROM Courses WHERE CID=?;`;
 
-  db.query(query, [userID,courseID], (error, results) => {
-    if (error) return res.status(400).json({ error : "Course does not exist."});
+  db.query(courseQuery,[courseID],(error,results)=>{
+    if(error) return res.status(500).json({ error : "Database error" });
 
-    return res.status(200).send("Registered To Course");
+    if (results.length==0) return res.status(400).json({ error : "Course does not exist."});
+
+    let query = `INSERT INTO Attends (SID, CID, GRADE) VALUES (?, ?, NULL);`;
+
+    db.query(query, [userID,courseID], (error, results) => {
+      if(error) return res.status(500).json({ error : "Database error" });
+
+      return res.status(200).json({ success : "Registered To Course" });
+    });
   });
-}
+
+
+  }
 
 export function removeCourse(req,res){
   let courseID = req.params.courseID;
   let userID = req.userID;
 
-  let query = `DELETE FROM Attends WHERE SID = ? AND CID = ?`;
+  let query = `DELETE FROM Attends WHERE SID = ? AND CID = ?;`;
 
   db.query(query, [userID,courseID],(error,result)=>{
-    if(error) return res.status(500).send("Database error");
+    if(error) return res.status(500).json({ error : "Database error" });
 
-    if (result.affectedRows === 0) return res.status(404).json({ error: "Course not found" });
+    if (result.affectedRows == 0) return res.status(404).json({ error: "Course not found" });
 
-    return res.status(200).send("Removed From Course");
+    return res.status(200).json({ error : "Removed From Course" });
   });
 }
