@@ -7,7 +7,7 @@ import { isStudent } from "../middleware/checkUserType.js";
 
 const router = express.Router();
 router.get("/registeredCourses", authenticateToken, isStudent, getRegisteredCourses);
-router.put("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, registerCourse);
+router.patch("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, registerCourse);
 router.delete("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, removeCourse);
 
 export default router;
