@@ -1,57 +1,46 @@
-import db from "../db/connection.js"
+import {getRegisteredCourses,registerCourse, unregisterCourse} from "../db/studentQueries.js"
+import {getCourseById} from "../db/idQueries.js";
 
-export function getRegisteredCourses(req,res){
-  let userID = req.userID;
+export async function getRegisteredCoursesController(req,res){
+  let studentID = req.userID;
 
-  let query = 
-  `SELECT c.CID,c.NAME, a.GRADE, s.AVAILCOURSES
-  FROM Students s
-  JOIN Attends a ON s.SID = a.SID
-  JOIN Courses c ON a.CID = c.CID
-  WHERE s.SID = ?;`;
-
-  db.query(query, [userID], (error,results)=>{
-    if(error) return res.status(500).json({ error : "Database error" });
-
-    return res.status(200).json(results);
-  });
+  try{
+    let courses = await getRegisteredCourses(studentID);
+    return res.status(200).json(courses); 
+  }
+  catch(error){
+    return res.status(500).json({ error : "Database error" });
+  }
 }
 
-export function registerCourse(req,res){
+export async function registerCourseController(req,res){
   let courseID = req.params.courseID;
-  let userID = req.userID;
+  let studentID = req.userID;
 
-  let courseQuery =
-  `SELECT * FROM Courses WHERE CID=?;`;
+  try{
+    let course = await getCourseById(courseID);
+    if(!course) return res.status(400).json({ error : "Course does not exist."});
 
-  db.query(courseQuery,[courseID],(error,results)=>{
-    if(error) return res.status(500).json({ error : "Database error" });
+    await registerCourse(studentID,courseID);
 
-    if (results.length==0) return res.status(400).json({ error : "Course does not exist."});
-
-    let query = `INSERT INTO Attends (SID, CID, GRADE) VALUES (?, ?, NULL);`;
-
-    db.query(query, [userID,courseID], (error, results) => {
-      if(error) return res.status(500).json({ error : "Database error" });
-
-      return res.status(200).json({ success : "Registered To Course" });
-    });
-  });
-
-
+    return res.status(200).json({ success : "Registered To Course" });
   }
+  catch(error){
+    return res.status(500).json({ error : "Database error" });
+  }
+}
 
-export function removeCourse(req,res){
+export async function removeCourseController(req,res){
   let courseID = req.params.courseID;
-  let userID = req.userID;
+  let studentID = req.userID;
 
-  let query = `DELETE FROM Attends WHERE SID = ? AND CID = ?;`;
-
-  db.query(query, [userID,courseID],(error,result)=>{
-    if(error) return res.status(500).json({ error : "Database error" });
-
-    if (result.affectedRows == 0) return res.status(404).json({ error: "Course not found" });
+  try{
+    let result = await unregisterCourse(studentID,courseID);
+    if(result.affectedRows==0) return res.status(404).json({ error: "Student not enrolled in course" });
 
     return res.status(200).json({ error : "Removed From Course" });
-  });
+  }
+  catch(error){
+    return res.status(500).json({ error : "Database error" });
+  }
 }
