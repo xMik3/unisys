@@ -1,33 +1,32 @@
-import {courseSchema, loginSchema,parameterSchema} from "../validation/validationSchema.js";
+import {courseSchema, gradingSchema, loginSchema, paramSchema} from "../validation/validationSchemas.js";
 
 export function validateLoginInput(req,res,next){
-  
+
   const {error,value} = loginSchema.validate(req.body);
   
-  if(error) return res.status(401).json({ error: "Invalid Inputs"});
+  if(error) return res.status(401).json({ error: "Invalid Input"});
 
   next();
 }
 
 export function validateParameters(req,res,next){
 
-  if(req.params.courseID){
-    const {error,value} = parameterSchema.validate(req.params.courseID);
+  for(const element in req.params){
+
+    const {error,value} = paramSchema.validate(req.params[element]);
   
-    if(error) return res.status(401).json({ error: "Invalid Inputs"});
+    if(error) return res.status(401).json({ error: "Invalid Input"});
+
   }
 
-  if(req.params.studentID){
-    const {error,value} = parameterSchema.validate(req.params.studentID);
-    
-    if(error) return res.status(401).json({ error: "Invalid Inputs"});
-  }
+  next();
+}
 
-  if(req.params.teacherID){
-    const {error,value} = parameterSchema.validate(req.params.teacherID);
-    
-    if(error) return res.status(401).json({ error: "Invalid Inputs"});
-  }
+export function validateGrade(req,res,next){
+
+  const {error,value} = gradingSchema.validate(req.body);
+
+  if(error) return res.status(400).json({ error : "Incorrect Grade"});
 
   next();
 }
@@ -35,7 +34,7 @@ export function validateParameters(req,res,next){
 export function validateCourseInput(req,res,next){
   const {error,value} = courseSchema.validate(req.body);
 
-  if(error) return res.status(401).json({ error: "Invalid Inputs"});
+  if(error) return res.status(401).json({ error: "Invalid Input"});
 
   next();
 }
