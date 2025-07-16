@@ -1,4 +1,4 @@
-import {getCourses,addCourse,editCourse,removeCourse,assignTeacher} from "../db/secretaryQueries.js";
+import {getCourses,addCourse,editCourse,removeCourse,assignTeacher} from "../db/courseManagementQueries.js";
 import {getTeacherById} from "../db/idQueries.js";
 
 

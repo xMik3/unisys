@@ -36,3 +36,18 @@ export async function unregisterCourse(studentID,courseID){
         throw error;
     }
 }
+
+export async function getSemesters(studentID,courseID){
+    try{
+        let semesters =  await db.promise().query(
+          `SELECT s.SEMESTER as studentSemester, c.SEMESTER as courseSemester
+          FROM Students s, Courses c
+          WHERE s.SID=? AND c.CID=?;`,
+          [studentID,courseID]
+        );
+        return semesters[0][0];
+    }
+    catch(error){
+        throw error;
+    }
+}

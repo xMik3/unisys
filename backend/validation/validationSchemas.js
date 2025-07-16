@@ -16,9 +16,7 @@ export const paramSchema = joi.number().integer().positive().required();
 
 export const loginSchema = joi.object({
   userID: idSchema,
-
   userPWD: pwdSchema,
-
   userType: userTypeSchema
 }).required();
 
@@ -26,10 +24,14 @@ export const gradingSchema = joi.object({
   grade : gradeSchema
 }).required();
 
+export const userCredentialsSchema = joi.object({
+  userName : nameSchema,
+  userSurname : nameSchema,
+  userPWD : pwdSchema
+}).required();
 
 export const courseSchema = joi.object({
   courseName: nameSchema,
-
   courseSemester: semesterSchema
 }).required();
 
