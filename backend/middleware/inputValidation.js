@@ -1,4 +1,4 @@
-import {courseSchema, gradingSchema, loginSchema, paramSchema} from "../validation/validationSchemas.js";
+import {courseSchema, gradingSchema, loginSchema, paramSchema,userCredentialsSchema} from "../validation/validationSchemas.js";
 
 export function validateLoginInput(req,res,next){
 
@@ -39,3 +39,10 @@ export function validateCourseInput(req,res,next){
   next();
 }
 
+export function validateUserCredentials(req,res,next){
+  const {error,value} = userCredentialsSchema.validate(req.body);
+
+  if(error) return res.status(401).json({ error: "Invalid Input"});
+
+  next();
+}

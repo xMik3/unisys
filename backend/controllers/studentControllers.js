@@ -18,14 +18,18 @@ export async function registerCourseController(req,res){
   let studentID = req.userID;
 
   try{
-    let course = await getCourseById(courseID);
-    if(!course) return res.status(400).json({ error : "Course does not exist."});
+    let semesters = await getSemesters(studentID,courseID);
+    if(!semesters) return res.status(400).json({ error : "Course does not exist."});
+
+    if(semesters.studentSemester > semesters.courseSemester) return res.status(400).json({ error : "Invalid semester registration"});
 
     await registerCourse(studentID,courseID);
 
     return res.status(200).json({ success : "Registered To Course" });
   }
   catch(error){
+    if(error.code == "ER_DUP_ENTRY") return res.status(400).json({ error : "Student already registered to course"});
+
     return res.status(500).json({ error : "Database error" });
   }
 }

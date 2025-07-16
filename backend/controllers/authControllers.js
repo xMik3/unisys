@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import {getStudentById,getTeacherById} from "../db/idQueries.js";
-import { generateToken } from "../utils/generateToken.js";
+import {generateToken} from "../utils/generateToken.js";
 
 
 export async function loginController(req,res){
