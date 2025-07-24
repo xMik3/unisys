@@ -1,2 +1,9 @@
 backend/node_modules
 backend/.env
+
+
+frontend/target/
+
+### IntelliJ ###
+frontend/.idea
+
