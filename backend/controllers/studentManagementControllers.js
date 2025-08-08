@@ -8,10 +8,10 @@ export async function getStudentsController(req,res){
 
     try{
         let students = await getStudents();
-        return res.status(200).json(students);
+        return res.status(200).json({status:"success", message:"Students Retrieved", students: students});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({status:"error", message : "Database error", students: null});
     }
 
 }
@@ -25,10 +25,10 @@ export async function addStudentController(req,res){
 
     try{
         await addStudent(studentName,studentSurname,hashedStudentPWD);
-        return res.status(200).json({ success : "Student added"});
+        return res.status(200).json({ status: "success", message: "Student added"});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({ status: "error", message: "Database error" });
     }
 
 }
@@ -43,12 +43,12 @@ export async function editStudentController(req,res){
 
     try{
         let result = await editStudent(studentName,studentSurname,hashedStudentPWD,studentID);
-        if(result.affectedRows==0) return res.status(400).json( { error : "Student does not exist"} );
+        if(result.affectedRows==0) return res.status(400).json({status: "error", message : "Student does not exist"} );
 
-        return res.status(200).json({ success : "Student edited"});
+        return res.status(200).json({status: "success", message : "Student edited"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message : "Database error" });
     }
 }
 
@@ -57,21 +57,21 @@ export async function removeStudentController(req,res){
     
     try{
         let result = await removeStudent(studentID);
-        if(result.affectedRows==0) return res.status(404).json({ error: "Student not found" });
+        if(result.affectedRows==0) return res.status(404).json({status :"error", message: "Student not found" });
 
-        return res.status(200).json({ success : "Student removed"});
+        return res.status(200).json({status:"success", message : "Student removed"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message : "Database error" });
     }
 }
 
 export async function advanceSemesterController(req,res){
     try{
         await advanceSemester();
-        return res.status(200).json({ success : "Semester advanced"});
+        return res.status(200).json({status: "success", message : "Semester advanced"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message : "Database error" });
     }
 }

@@ -12,7 +12,7 @@ export async function loginController(req,res){
   let userType = req.body.userType;
 
   if(userType === "secretary" && userPWD === process.env.SECRETARY_PWD && userID === 0){
-    return res.json(generateToken(userID,userType));
+    return res.json({status: "success", message: "Login Successful", token:generateToken(userID,userType)});
   }
 
   let user;
@@ -25,22 +25,22 @@ export async function loginController(req,res){
     }
   }
   catch(error){
-    return res.status(500).json({ error: "Database error" });
+    return res.status(500).json({status: "error", message: "Database error", token: null});
   }
 
   if(!user){
-    return res.status(401).json({ error: "User not found" });
+    return res.status(401).json({status: "error", message: "User not found", token: null});
   }
 
   try{
     let match = await bcrypt.compare(userPWD,user.PASSWORD);
 
-    if(!match) return res.status(401).json({ error: "Invalid Credentials "});
+    if(!match) return res.status(401).json({status:"error", message: "Invalid Credentials ", token: null});
 
-    return res.status(200).json(generateToken(userID,userType));
+    return res.status(200).json({status: "success", message: "Login Successful", token: generateToken(userID,userType)});
   }
   catch(error){
-    return res.status(500).json({ error: "Authentication Error"});
+    return res.status(500).json({status: "error", message: "Authentication Error", token: null });
   }
 
 }
