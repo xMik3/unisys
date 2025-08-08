@@ -6,10 +6,10 @@ export async function getCoursesController(req,res){
     
     try{
         let courses = await getCourses();
-        return res.status(200).json(courses);
+        return res.status(200).json({status: "success", message:"Courses Sent", courses:courses});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error", courses: null});
     }
 
 }
@@ -20,10 +20,10 @@ export async function addCourseController(req,res){
 
     try{
         await addCourse(courseName,courseSemester);
-        return res.status(200).json({ success : "Course added"});
+        return res.status(200).json({status: "success", message: "Course added"});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error" });
     }
 
 }
@@ -34,15 +34,15 @@ export async function assignTeacherController(req,res){
 
     try{
         let teacher = await getTeacherById(teacherID);
-        if(!teacher) return res.status(400).json( { error : "Teacher does not exist"} );
+        if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
 
         let result = await assignTeacher(teacherID,courseID);
-        if(result.affectedRows==0) return res.status(400).json( { error : "Course does not exist"} );
+        if(result.affectedRows==0) return res.status(400).json( {status: "error", message: "Course does not exist"} );
 
-        return res.status(200).json({ success : "Teacher assigned"});
+        return res.status(200).json({status: "success", message: "Teacher assigned"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json( {status: "error", message : "Database error" });
     }
     
 }
@@ -54,12 +54,12 @@ export async function editCourseController(req,res){
 
     try{
         let result = await editCourse(courseName,courseSemester,courseID);
-        if(result.affectedRows==0) return res.status(400).json( { error : "Course does not exist"} );
+        if(result.affectedRows==0) return res.status(400).json({status: "error", message : "Course does not exist"} );
 
-        return res.status(200).json({ success : "Course edited"});
+        return res.status(200).json({status: "success", message : "Course edited"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message : "Database error" });
     }
 }
 
@@ -68,11 +68,11 @@ export async function removeCourseController(req,res){
     
     try{
         let result = await removeCourse(courseID);
-        if(result.affectedRows==0) return res.status(404).json({ error: "Course not found" });
+        if(result.affectedRows==0) return res.status(404).json({status: "error", message: "Course not found" });
 
-        return res.status(200).json({ success : "Course removed"});
+        return res.status(200).json({status: "success", message: "Course removed"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error" });
     }
 }

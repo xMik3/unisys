@@ -8,10 +8,10 @@ export async function getTeachersController(req,res){
     
     try{
         let teachers = await getTeachers();
-        return res.status(200).json(teachers);
+        return res.status(200).json({status: "success", message:"Teachers Retrieved", teachers: teachers});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error", teachers: null});
     }
 
 }
@@ -25,10 +25,10 @@ export async function addTeacherController(req,res){
 
     try{
         await addTeacher(teacherName,teacherSurname,hashedTeacherPWD);
-        return res.status(200).json({ success : "Teacher added"});
+        return res.status(200).json({status: "success", message : "Teacher added"});
     }
     catch(error){
-        return res.status(500).json({ error : "Database error" });
+        return res.status(500).json({status: "error", message : "Database error"});
     }
 
 }
@@ -43,12 +43,12 @@ export async function editTeacherController(req,res){
 
     try{
         let result = await editTeacher(teacherName,teacherSurname,hashedTeacherPWD,teacherID);
-        if(result.affectedRows==0) return res.status(400).json( { error : "Teacher does not exist"} );
+        if(result.affectedRows==0) return res.status(400).json({status: "error", message: "Teacher does not exist"} );
 
-        return res.status(200).json({ success : "Teacher edited"});
+        return res.status(200).json({status: "success", message: "Teacher edited"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error" });
     }
 }
 
@@ -57,11 +57,11 @@ export async function removeTeacherController(req,res){
     
     try{
         let result = await removeTeacher(teacherID);
-        if(result.affectedRows==0) return res.status(404).json({ error: "Teacher not found" });
+        if(result.affectedRows==0) return res.status(404).json({status: "error", message: "Teacher not found" });
 
-        return res.status(200).json({ success : "Teacher removed"});
+        return res.status(200).json({status: "success", message: "Teacher removed"});
     }
     catch(error){
-        return res.status(500).json( { error : "Database error" });
+        return res.status(500).json({status: "error", message: "Database error" });
     }
 }

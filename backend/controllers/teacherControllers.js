@@ -5,10 +5,10 @@ export async function getManagedCoursesController(req,res){
 
   try{
     let courses = await getManagedCourses(teacherID);
-    return res.status(200).json(courses);
+    return res.status(200).json({status: "success", message: "Managed Courses Retrieved", courses: courses});
   }
   catch(error){
-    return res.status(500).json({ error: "Database Error" });
+    return res.status(500).json({status: "error", message: "Database Error", courses: null});
   }
 }
 
@@ -18,10 +18,10 @@ export async function getManagedStudentsController(req,res){
   
   try{
     let students = await getManagedStudents(courseID,teacherID);
-    return res.status(200).json(students);
+    return res.status(200).json({status: "success", message: "Managed Students Retrieved", students: students});
   }
   catch(error){
-    return res.status(500).json({ error: "Database Error" });
+    return res.status(500).json({status: "error", message: "Database Error", students: null});
   }
 }
 
@@ -34,12 +34,12 @@ export async function gradeStudentController(req,res){
   
   try{
     let result = await gradeStudent(grade,studentID,courseID,userID);
-    if(result.affectedRows==0) return res.status(403).json({ error: "Unauthorized To Grade This Student" });
+    if(result.affectedRows==0) return res.status(403).json({status: "error", message: "Unauthorized To Grade This Student" });
 
-    return res.status(200).json({ success : "Student graded" });
+    return res.status(200).json({status:"success", message: "Student graded" });
   }
   catch(error){
-    return res.status(500).json({ error: "Database Error" });
+    return res.status(500).json({status:"error", message: "Database Error" });
   }
 }
 
