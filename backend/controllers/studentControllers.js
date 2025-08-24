@@ -8,7 +8,7 @@ export async function getRegisteredCoursesController(req,res){
     return res.status(200).json({status: "success", message:"Registered Courses Retrieved", courses:courses}); 
   }
   catch(error){
-    return res.status(500).json({status: "error", message: "Database error", course: null});
+    return res.status(500).json({status: "error", message: "Database error"});
   }
 }
 

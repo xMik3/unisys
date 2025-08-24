@@ -11,7 +11,7 @@ export async function getStudentsController(req,res){
         return res.status(200).json({status:"success", message:"Students Retrieved", students: students});
     }
     catch(error){
-        return res.status(500).json({status:"error", message : "Database error", students: null});
+        return res.status(500).json({status:"error", message : "Database error"});
     }
 
 }

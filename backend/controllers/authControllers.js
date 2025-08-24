@@ -11,36 +11,36 @@ export async function loginController(req,res){
   let userPWD = req.body.userPWD;
   let userType = req.body.userType;
 
-  if(userType === "secretary" && userPWD === process.env.SECRETARY_PWD && userID === 0){
+  if(userType === "Secretary" && userPWD === process.env.SECRETARY_PWD && userID === 0){
     return res.json({status: "success", message: "Login Successful", token:generateToken(userID,userType)});
   }
 
   let user;
   try{
-    if(userType === "student"){
+    if(userType === "Student"){
       user = await getStudentById(userID);
     }
-    else if(userType === "teacher"){
+    else if(userType === "Teacher"){
       user = await getTeacherById(userID);
     }
   }
   catch(error){
-    return res.status(500).json({status: "error", message: "Database error", token: null});
+    return res.status(500).json({status: "error", message: "Database error"});
   }
 
   if(!user){
-    return res.status(401).json({status: "error", message: "User not found", token: null});
+    return res.status(401).json({status: "error", message: "User not found"});
   }
 
   try{
     let match = await bcrypt.compare(userPWD,user.PASSWORD);
 
-    if(!match) return res.status(401).json({status:"error", message: "Invalid Credentials ", token: null});
+    if(!match) return res.status(401).json({status:"error", message: "Invalid Credentials "});
 
     return res.status(200).json({status: "success", message: "Login Successful", token: generateToken(userID,userType)});
   }
   catch(error){
-    return res.status(500).json({status: "error", message: "Authentication Error", token: null });
+    return res.status(500).json({status: "error", message: "Authentication Error"});
   }
 
 }

@@ -2,11 +2,11 @@ import joi from "joi";
 
 const idSchema = joi.string().pattern(/^[0-9]{6}/).required();
 
-const pwdSchema = joi.string().min(4).max(20).required();
+const pwdSchema = joi.string().min(5).max(19).required();
 
-const userTypeSchema = joi.string().valid("student", "teacher", "secretary").required();
+const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").required();
 
-const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(4).max(20).required();
+const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(5).max(19).required();
 
 const semesterSchema = joi.number().integer().positive().max(10).required();
 
