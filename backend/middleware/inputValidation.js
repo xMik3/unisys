@@ -4,7 +4,7 @@ export function validateLoginInput(req,res,next){
 
   const {error,value} = loginSchema.validate(req.body);
   
-  if(error) return res.status(401).json({ error: "Invalid Input"});
+  if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
   next();
 }
@@ -15,7 +15,7 @@ export function validateParameters(req,res,next){
 
     const {error,value} = paramSchema.validate(req.params[element]);
   
-    if(error) return res.status(401).json({ error: "Invalid Input"});
+    if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
   }
 
@@ -26,7 +26,7 @@ export function validateGrade(req,res,next){
 
   const {error,value} = gradingSchema.validate(req.body);
 
-  if(error) return res.status(400).json({ error : "Incorrect Grade"});
+  if(error) return res.status(400).json({ status:"error", message:"Incorrect Grade"});
 
   next();
 }
@@ -34,7 +34,7 @@ export function validateGrade(req,res,next){
 export function validateCourseInput(req,res,next){
   const {error,value} = courseSchema.validate(req.body);
 
-  if(error) return res.status(401).json({ error: "Invalid Input"});
+  if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
   next();
 }
@@ -42,7 +42,7 @@ export function validateCourseInput(req,res,next){
 export function validateUserCredentials(req,res,next){
   const {error,value} = userCredentialsSchema.validate(req.body);
 
-  if(error) return res.status(401).json({ error: "Invalid Input"});
+  if(error) return res.status(401).json({status:"error", message: "Invalid Input"});
 
   next();
 }

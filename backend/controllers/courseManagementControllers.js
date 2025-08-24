@@ -9,7 +9,7 @@ export async function getCoursesController(req,res){
         return res.status(200).json({status: "success", message:"Courses Sent", courses:courses});
     }
     catch(error){
-        return res.status(500).json({status: "error", message: "Database error", courses: null});
+        return res.status(500).json({status: "error", message: "Database error"});
     }
 
 }
