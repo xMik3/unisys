@@ -1,5 +1,5 @@
-import {getCourses,addCourse,editCourse,removeCourse,assignTeacher} from "../db/courseManagementQueries.js";
-import {getTeacherById} from "../db/idQueries.js";
+import {getCourses,getCourse,addCourse,editCourse,removeCourse,assignTeacher} from "../db/courseManagementQueries.js";
+import {getTeacher} from "../db/teacherManagementQueries.js";
 
 
 export async function getCoursesController(req,res){
@@ -7,6 +7,20 @@ export async function getCoursesController(req,res){
     try{
         let courses = await getCourses();
         return res.status(200).json({status: "success", message:"Courses Sent", courses:courses});
+    }
+    catch(error){
+        return res.status(500).json({status: "error", message: "Database error"});
+    }
+
+}
+
+export async function getCourseController(req,res){
+    
+    try{
+        let courseID = req.params.courseID;
+        let course = await getCourse(courseID);
+        if(course.length==0) return res.status(404).json({status: "error", message: "Course not found"});
+        return res.status(200).json({status: "success", message:"Course Retrieved", course: course[0]});    
     }
     catch(error){
         return res.status(500).json({status: "error", message: "Database error"});
@@ -33,7 +47,7 @@ export async function assignTeacherController(req,res){
     let teacherID = req.params.teacherID;
 
     try{
-        let teacher = await getTeacherById(teacherID);
+        let teacher = await getTeacher(teacherID);
         if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
 
         let result = await assignTeacher(teacherID,courseID);

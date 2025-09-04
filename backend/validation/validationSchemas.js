@@ -6,7 +6,9 @@ const pwdSchema = joi.string().min(5).max(19).required();
 
 const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").required();
 
-const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(5).max(19).required();
+const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(3).max(19).required();
+
+const yearSchema = joi.number().integer().positive().min(2000).max(parseInt(new Date().getFullYear())).required();
 
 const semesterSchema = joi.number().integer().positive().max(10).required();
 
@@ -24,10 +26,23 @@ export const gradingSchema = joi.object({
   grade : gradeSchema
 }).required();
 
-export const userCredentialsSchema = joi.object({
-  userName : nameSchema,
-  userSurname : nameSchema,
-  userPWD : pwdSchema
+export const teacherCredentialsSchema = joi.object({
+  teacherName : nameSchema,
+  teacherSurname : nameSchema,
+  teacherPWD : pwdSchema
+}).required();
+
+export const studentAddCredentialsSchema = joi.object({
+  studentName : nameSchema,
+  studentSurname : nameSchema,
+  studentPWD : pwdSchema,
+  studentEnrollmentYear : yearSchema
+}).required();
+
+export const studentEditCredentialsSchema = joi.object({
+  studentName : nameSchema,
+  studentSurname : nameSchema,
+  studentPWD : pwdSchema,
 }).required();
 
 export const courseSchema = joi.object({

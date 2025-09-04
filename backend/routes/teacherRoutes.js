@@ -9,7 +9,6 @@ const router = express.Router();
 router.get("/managedCourses", authenticateToken, isTeacher, getManagedCoursesController);
 router.get("/managedCourses/:courseID/students", authenticateToken, isTeacher, validateParameters, getManagedStudentsController);
 
-//optimize
 router.patch("/managedCourses/:courseID/students/:studentID", authenticateToken, isTeacher, validateParameters, validateGrade, gradeStudentController);
 
 export default router;

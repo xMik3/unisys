@@ -2,8 +2,34 @@ import db from "./connection.js";
 
 export async function getCourses(){
     try{
-        let courses = await db.promise().query(`SELECT * FROM Courses;`);
+        let courses = await db.promise().query(`
+            SELECT LPAD(c.CID,6,"0") AS ID,
+            c.NAME AS Name,
+            c.SEMESTER AS Semester,
+            t.NAME AS TeacherName,
+            t.SURNAME AS TeacherSurname
+            FROM Courses c LEFT JOIN Teachers t ON c.TID = t.TID;
+        `);
         return courses[0];
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+export async function getCourse(courseID){
+    try{
+        let course = await db.promise().query(`
+            SELECT LPAD(c.CID,6,"0") AS ID,
+            c.NAME AS Name,
+            c.SEMESTER AS Semester,
+            t.NAME AS TeacherName,
+            t.SURNAME AS TeacherSurname
+            FROM Courses c LEFT JOIN Teachers t ON c.TID = t.TID
+             WHERE CID=?;`
+            ,[courseID]
+        );
+        return course[0];
     }
     catch(error){
         throw error;

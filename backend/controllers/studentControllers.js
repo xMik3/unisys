@@ -1,4 +1,4 @@
-import {getRegisteredCourses,registerCourse, unregisterCourse} from "../db/studentQueries.js"
+import {getRegisteredCourses,registerCourse, unregisterCourse,getSemesters} from "../db/studentQueries.js"
 
 export async function getRegisteredCoursesController(req,res){
   let studentID = req.userID;

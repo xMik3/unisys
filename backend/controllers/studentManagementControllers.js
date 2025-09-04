@@ -2,12 +2,14 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
-import {getStudents,addStudent,editStudent,removeStudent,advanceSemester} from "../db/studentManagementQueries.js";
+import {getStudents,getStudent,addStudent,editStudent,removeStudent,advanceSemester} from "../db/studentManagementQueries.js";
 
 export async function getStudentsController(req,res){
 
     try{
-        let students = await getStudents();
+        let year = req.params.year;
+        let students = await getStudents(year);
+        if(students.length==0) return res.status(404).json({status:"error", message:"No students found"});
         return res.status(200).json({status:"success", message:"Students Retrieved", students: students});
     }
     catch(error){
@@ -16,15 +18,33 @@ export async function getStudentsController(req,res){
 
 }
 
+export async function getStudentController(req,res){
+    
+    
+    try{
+        let studentID = req.params.studentID;
+        let student = await getStudent(studentID);
+
+        if(student.length==0) return res.status(404).json({status:"error", message:"Student not found"});
+        return res.status(200).json({status:"success", message:"Student Retrieved", student: student[0]});
+    }
+    catch(error){
+        return res.status(500).json({status:"error", message : "Database error"});
+    }
+
+}
+
 export async function addStudentController(req,res){
-    let studentName = req.body.userName;
-    let studentSurname = req.body.userSurname;
-    let studentPWD = req.body.userPWD;
+    let studentName = req.body.studentName;
+    let studentSurname = req.body.studentSurname;
+    let studentPWD = req.body.studentPWD;
+    let studentEnrollmentYear = req.body.studentEnrollmentYear;
+    let studentSemester = 1+2*(parseInt(new Date().getFullYear()) - parseInt(studentEnrollmentYear));
 
     let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
 
     try{
-        await addStudent(studentName,studentSurname,hashedStudentPWD);
+        await addStudent(studentName,studentSurname,hashedStudentPWD,studentEnrollmentYear,studentSemester);
         return res.status(200).json({ status: "success", message: "Student added"});
     }
     catch(error){
@@ -35,9 +55,9 @@ export async function addStudentController(req,res){
 
 export async function editStudentController(req,res){
     let studentID = req.params.studentID;
-    let studentName = req.body.userName;
-    let studentSurname = req.body.userSurname;
-    let studentPWD = req.body.userPWD;
+    let studentName = req.body.studentName;
+    let studentSurname = req.body.studentSurname;
+    let studentPWD = req.body.studentPWD;
 
     let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
 
