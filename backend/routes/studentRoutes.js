@@ -8,7 +8,7 @@ import { isStudent } from "../middleware/userType.js";
 const router = express.Router();
 router.get("/registeredCourses", authenticateToken, isStudent, getRegisteredCoursesController);
 
-router.patch("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, registerCourseController);
+router.put("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, registerCourseController);
 router.delete("/registeredCourses/:courseID", authenticateToken, isStudent, validateParameters, removeCourseController);
 
 export default router;

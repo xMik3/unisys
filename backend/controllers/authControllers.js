@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
-import {getStudentById,getTeacherById} from "../db/idQueries.js";
+import {getStudentPassword} from "../db/studentManagementQueries.js";
+import {getTeacherPassword} from "../db/teacherManagementQueries.js";
 import {generateToken} from "../utils/generateToken.js";
 
 
@@ -18,10 +19,10 @@ export async function loginController(req,res){
   let user;
   try{
     if(userType === "Student"){
-      user = await getStudentById(userID);
+      user = await getStudentPassword(userID);
     }
     else if(userType === "Teacher"){
-      user = await getTeacherById(userID);
+      user = await getTeacherPassword(userID);
     }
   }
   catch(error){

@@ -1,4 +1,4 @@
-import {courseSchema, gradingSchema, loginSchema, paramSchema,userCredentialsSchema} from "../validation/validationSchemas.js";
+import {courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema} from "../validation/validationSchemas.js";
 
 export function validateLoginInput(req,res,next){
 
@@ -39,10 +39,34 @@ export function validateCourseInput(req,res,next){
   next();
 }
 
-export function validateUserCredentials(req,res,next){
-  const {error,value} = userCredentialsSchema.validate(req.body);
+export function validateTeacherCredentials(req,res,next){
+  const {error,value} = teacherCredentialsSchema.validate(req.body);
 
   if(error) return res.status(401).json({status:"error", message: "Invalid Input"});
+
+  next();
+}
+
+export function validateStudentAddCredentials(req,res,next){
+  const {error,value} = studentAddCredentialsSchema.validate(req.body);
+
+  if(error) return res.status(401).json({status:"error", message: "Invalid Input"});
+
+  next();
+}
+
+export function validateEditStudentCredentials(req,res,next){
+  const {error,value} = studentEditCredentialsSchema.validate(req.body);
+
+  if(error) return res.status(401).json({status:"error", message: "Invalid Input"});
+
+  next();
+}
+
+export function validateYear(req,res,next){
+  const {error,value} = paramSchema.validate(req.params.year);
+
+  if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
   next();
 }

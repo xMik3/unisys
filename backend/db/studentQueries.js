@@ -3,11 +3,16 @@ import db from "./connection.js";
 export async function getRegisteredCourses(studentID){
     try{
         let courses = await db.promise().query(
-            `SELECT c.CID,c.NAME AS CNAME, a.GRADE, t.NAME AS TNAME, t.SURNAME AS TSURNAME
+            `SELECT LPAD(c.CID,6,"0") AS ID,
+            c.NAME AS Name,
+            c.SEMESTER AS Semester,
+            a.GRADE AS Grade,
+            t.NAME AS TeacherName,
+            t.SURNAME AS TeacherSurname
             FROM Students s
             JOIN Attends a ON s.SID = a.SID
             JOIN Courses c ON a.CID = c.CID
-            JOIN Teachers t ON c.TID = t.TID
+            LEFT JOIN Teachers t ON c.TID = t.TID
             WHERE s.SID = ?;`,
             [studentID]
         );
@@ -30,7 +35,7 @@ export async function registerCourse(studentID,courseID){
 
 export async function unregisterCourse(studentID,courseID){
     try{
-        return await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ?;`,[studentID,courseID]);
+        return await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND GRADE IS NULL;`,[studentID,courseID]);
     }
     catch(error){
         throw error;
