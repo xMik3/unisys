@@ -2,15 +2,15 @@ import joi from "joi";
 
 export const idSchema = joi.string().pattern(/^[0-9]{6}/).required();
 
-const pwdSchema = joi.string().min(3).max(31).required();
+const pwdSchema = joi.string().min(3).max(20).required();
 
 const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").required();
 
-const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(3).max(19).required();
+const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(4).max(30).required();
 
 const yearSchema = joi.number().integer().positive().min(2000).max(parseInt(new Date().getFullYear())).required();
 
-const semesterSchema = joi.number().integer().positive().max(10).required();
+const semesterSchema = joi.number().integer().positive().max(12).required();
 
 export const gradeSchema = joi.number().min(0).max(10).required();
 
