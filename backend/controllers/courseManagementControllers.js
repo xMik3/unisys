@@ -6,6 +6,7 @@ export async function getCoursesController(req,res){
     
     try{
         let courses = await getCourses();
+        if(courses.length==0) return res.status(404).json({status:"error", message:"No courses found"});
         return res.status(200).json({status: "success", message:"Courses Sent", courses:courses});
     }
     catch(error){

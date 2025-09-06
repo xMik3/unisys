@@ -1,4 +1,4 @@
-import {getRegisteredCourses,registerCourse, unregisterCourse,getSemesters} from "../db/studentQueries.js"
+import {getRegisteredCourses,registerCourses, unregisterCourse,getAvailableCourses} from "../db/studentQueries.js"
 
 export async function getRegisteredCoursesController(req,res){
   let studentID = req.userID;
@@ -12,21 +12,30 @@ export async function getRegisteredCoursesController(req,res){
   }
 }
 
-export async function registerCourseController(req,res){
-  let courseID = req.params.courseID;
+export async function getAvailableCoursesController(req,res){
   let studentID = req.userID;
 
   try{
-    let semesters = await getSemesters(studentID,courseID);
-    if(!semesters) return res.status(400).json({status: "error", message: "Course does not exist."});
-
-    if(semesters.studentSemester > semesters.courseSemester) return res.status(400).json({status: "error", message : "Invalid semester registration"});
-
-    await registerCourse(studentID,courseID);
-
-    return res.status(200).json({status: "success", message : "Registered To Course"});
+    let courses = await getAvailableCourses(studentID);
+    return res.status(200).json({status:"success",message:"Available Courses Retrieved", courses:courses});
   }
   catch(error){
+    return res.status(500).json({status: "error", message: "Database error"});
+  }
+
+}
+
+export async function registerCoursesController(req,res){
+  let studentID = req.userID;
+  let courses = req.courses;
+
+  try{
+    await registerCourses(studentID,courses);
+
+    return res.status(200).json({status: "success", message : "Registered To Courses"});
+  }
+  catch(error){
+
     if(error.code == "ER_DUP_ENTRY") return res.status(400).json({status: "error", message: "Student already registered to course"});
 
     return res.status(500).json({status: "error", message : "Database error" });

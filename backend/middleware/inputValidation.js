@@ -1,4 +1,4 @@
-import {courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema} from "../validation/validationSchemas.js";
+import {idSchema,courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema} from "../validation/validationSchemas.js";
 
 export function validateLoginInput(req,res,next){
 
@@ -67,6 +67,22 @@ export function validateYear(req,res,next){
   const {error,value} = paramSchema.validate(req.params.year);
 
   if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
+
+  next();
+}
+
+export function validateCourses(req,res,next){
+  let courses = req.body.courses;
+  if(!courses) return res.status(401).json({ status:"error", message:"Invalid Input"});
+
+  courses.forEach(course => {
+    const {error,value} = idSchema.validate(course);
+
+    if(error) return res.status(401).json({ status:"error", message:"Invalid Input"});
+
+  });
+
+  req.courses = courses;
 
   next();
 }

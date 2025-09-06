@@ -1,8 +1,8 @@
 import joi from "joi";
 
-const idSchema = joi.string().pattern(/^[0-9]{6}/).required();
+export const idSchema = joi.string().pattern(/^[0-9]{6}/).required();
 
-const pwdSchema = joi.string().min(5).max(19).required();
+const pwdSchema = joi.string().min(3).max(31).required();
 
 const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").required();
 

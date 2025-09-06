@@ -24,11 +24,39 @@ export async function getRegisteredCourses(studentID){
     }
 }
 
-export async function registerCourse(studentID,courseID){
+export async function getAvailableCourses(studentID){
     try{
-        return await db.promise().query(`INSERT INTO Attends (SID, CID, GRADE) VALUES (?, ?, NULL);`,[studentID,courseID])
+        let courses = await db.promise().query(
+            `SELECT LPAD(CID,6,"0") AS ID,
+            NAME AS Name,
+            SEMESTER AS Semester
+            FROM Courses WHERE CID NOT IN(
+                SELECT CID
+                FROM Attends
+                WHERE SID = ?
+            ) AND SEMESTER <= (
+                SELECT SEMESTER
+                FROM Students
+                WHERE SID = ?
+            );`,
+            [studentID,studentID]
+        );
+        return courses[0];
     }
     catch(error){
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function registerCourses(studentID,courses){
+    try{
+        const values = courses.map(course => [studentID, course, null]);
+
+        return await db.promise().query(`INSERT INTO Attends (SID, CID, GRADE) VALUES ?;`,[values]);
+    }
+    catch(error){
+        console.log(error);
         throw error;
     }
 }
