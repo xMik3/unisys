@@ -8,6 +8,7 @@ export async function getTeachersController(req,res){
     
     try{
         let teachers = await getTeachers();
+        if(teacher.length==0) return res.status(404).json({status:"error", message:"No teachers found"});
         return res.status(200).json({status: "success", message:"Teachers Retrieved", teachers: teachers});
     }
     catch(error){
