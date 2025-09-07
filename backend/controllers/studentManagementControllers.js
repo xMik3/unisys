@@ -44,8 +44,8 @@ export async function addStudentController(req,res){
     let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
 
     try{
-        await addStudent(studentName,studentSurname,hashedStudentPWD,studentEnrollmentYear,studentSemester);
-        return res.status(200).json({ status: "success", message: "Student added"});
+        let studentID = await addStudent(studentName,studentSurname,hashedStudentPWD,studentEnrollmentYear,studentSemester);
+        return res.status(200).json({ status: "success", message: "Student added", studentID: studentID });
     }
     catch(error){
         return res.status(500).json({ status: "error", message: "Database error" });

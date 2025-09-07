@@ -50,7 +50,8 @@ export async function getStudentPassword(studentID){
 
 export async function addStudent(studentName,studentSurname,studentPWD,studentEnrollmentYear,studentSemester){
     try{
-        await db.promise().query(`INSERT INTO Students (NAME,SURNAME,SEMESTER,PASSWORD,AVAILCOURSES,ENROLLMENTYEAR) VALUES(?,?,?,?,7,?);`,[studentName,studentSurname,studentSemester,studentPWD,studentEnrollmentYear]);
+        const [result] = await db.promise().query(`INSERT INTO Students (NAME,SURNAME,SEMESTER,PASSWORD,AVAILCOURSES,ENROLLMENTYEAR) VALUES(?,?,?,?,7,?);`,[studentName,studentSurname,studentSemester,studentPWD,studentEnrollmentYear]);
+        return String(result.insertId).padStart(6,'0');
     }
     catch(error){
         throw error;

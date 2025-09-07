@@ -42,7 +42,8 @@ export async function getTeacherPassword(teacherID){
 
 export async function addTeacher(teacherName,teacherSurname,teacherPWD){
     try{
-        await db.promise().query(`INSERT INTO Teachers (NAME,SURNAME,PASSWORD) VALUES(?,?,?);`,[teacherName,teacherSurname,teacherPWD]);
+        const [result] = await db.promise().query(`INSERT INTO Teachers (NAME,SURNAME,PASSWORD) VALUES(?,?,?);`,[teacherName,teacherSurname,teacherPWD]);
+        return String(result.insertId).padStart(6,'0');
     }
     catch(error){
         throw error;
