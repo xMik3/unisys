@@ -38,7 +38,8 @@ export async function getCourse(courseID){
 
 export async function addCourse(courseName,courseSemester){
     try{
-        await db.promise().query(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,NULL);`,[courseName,courseSemester]);
+        const [result] = await db.promise().query(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,NULL);`,[courseName,courseSemester]);
+        return String(result.insertId).padStart(6,'0');
     }
     catch(error){
         throw error;

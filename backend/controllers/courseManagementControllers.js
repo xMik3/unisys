@@ -34,8 +34,8 @@ export async function addCourseController(req,res){
     let courseSemester = req.body.courseSemester;
 
     try{
-        await addCourse(courseName,courseSemester);
-        return res.status(200).json({status: "success", message: "Course added"});
+        let courseID = await addCourse(courseName,courseSemester);
+        return res.status(200).json({status: "success", message: "Course added", courseID: courseID});
     }
     catch(error){
         return res.status(500).json({status: "error", message: "Database error" });
