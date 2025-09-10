@@ -62,6 +62,9 @@ export async function editCourse(courseName,courseSemester,courseID){
 
 export async function removeCourse(courseID){
     try{
+        let attends = await db.promise().query(`SELECT * FROM Attends WHERE CID=?;`,[courseID]);
+        if(attends[0].length>0) throw new Error("Cannot delete course with enrolled students");
+        
         return db.promise().query(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
     }
     catch(error){
