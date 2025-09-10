@@ -88,6 +88,11 @@ export async function removeCourseController(req,res){
         return res.status(200).json({status: "success", message: "Course removed"});
     }
     catch(error){
-        return res.status(500).json({status: "error", message: "Database error" });
+        if(error.message=="Cannot delete course with enrolled students"){
+            return res.status(400).json({status: "error", message: error.message });
+        }
+        else{
+            return res.status(500).json({status: "error", message: "Database error" });
+        }
     }
 }
