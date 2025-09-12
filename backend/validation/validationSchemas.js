@@ -20,33 +20,38 @@ export const loginSchema = joi.object({
   userID: idSchema,
   userPWD: pwdSchema,
   userType: userTypeSchema
-}).required();
+});
 
 export const gradingSchema = joi.object({
   grade : gradeSchema
-}).required();
+});
 
 export const teacherCredentialsSchema = joi.object({
   teacherName : nameSchema,
   teacherSurname : nameSchema,
   teacherPWD : pwdSchema
-}).required();
+});
+
+export const teacherAssignSchema = joi.object({
+  courseID : paramSchema,
+  teacherID : paramSchema.allow("NULL")
+});
 
 export const studentAddCredentialsSchema = joi.object({
   studentName : nameSchema,
   studentSurname : nameSchema,
   studentPWD : pwdSchema,
   studentEnrollmentYear : yearSchema
-}).required();
+});
 
 export const studentEditCredentialsSchema = joi.object({
   studentName : nameSchema,
   studentSurname : nameSchema,
   studentPWD : pwdSchema,
-}).required();
+});
 
 export const courseSchema = joi.object({
   courseName: nameSchema,
   courseSemester: semesterSchema
-}).required();
+});
 

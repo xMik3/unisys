@@ -1,4 +1,4 @@
-import {idSchema,courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema} from "../validation/validationSchemas.js";
+import {idSchema,courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema, teacherAssignSchema} from "../validation/validationSchemas.js";
 
 export function validateLoginInput(req,res,next){
 
@@ -18,6 +18,15 @@ export function validateParameters(req,res,next){
     if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
   }
+
+  next();
+}
+
+export function validateTeacherAssignment(req,res,next){
+
+  const {error,value} = teacherAssignSchema.validate(req.params);
+
+  if(error) return res.status(401).json({status:"error",message:"Invalid Input"});
 
   next();
 }

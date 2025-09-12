@@ -5,7 +5,7 @@ import {addTeacherController, editTeacherController, getTeachersController, getT
 import {addStudentController, advanceSemesterController, editStudentController, getStudentsController, getStudentController,removeStudentController} from "../controllers/studentManagementControllers.js";
 
 import {authenticateToken} from "../middleware/authenticateToken.js";
-import {validateParameters, validateCourseInput,validateStudentAddCredentials,validateEditStudentCredentials,validateTeacherCredentials,validateYear} from "../middleware/inputValidation.js";
+import {validateParameters, validateCourseInput,validateStudentAddCredentials,validateEditStudentCredentials,validateTeacherCredentials,validateYear, validateTeacherAssignment} from "../middleware/inputValidation.js";
 import {isSecretary} from "../middleware/userType.js";
 
 
@@ -16,7 +16,7 @@ router.get("/courses/:courseID", authenticateToken, isSecretary,validateParamete
 router.patch("/courses/:courseID", authenticateToken, isSecretary, validateParameters, validateCourseInput, editCourseController);
 router.delete("/courses/:courseID", authenticateToken, isSecretary, validateParameters, removeCourseController);
 
-router.put("/courses/:courseID/:teacherID", authenticateToken, isSecretary, validateParameters, assignTeacherController);
+router.put("/courses/:courseID/:teacherID", authenticateToken, isSecretary, validateTeacherAssignment, assignTeacherController);
 
 
 router.put("/teachers",authenticateToken,isSecretary,validateTeacherCredentials,addTeacherController);
