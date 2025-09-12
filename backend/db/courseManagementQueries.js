@@ -6,6 +6,7 @@ export async function getCourses(){
             SELECT LPAD(c.CID,6,"0") AS ID,
             c.NAME AS Name,
             c.SEMESTER AS Semester,
+            LPAD(t.TID,6,"0") AS TeacherID,
             t.NAME AS TeacherName,
             t.SURNAME AS TeacherSurname
             FROM Courses c LEFT JOIN Teachers t ON c.TID = t.TID;
@@ -23,6 +24,7 @@ export async function getCourse(courseID){
             SELECT LPAD(c.CID,6,"0") AS ID,
             c.NAME AS Name,
             c.SEMESTER AS Semester,
+            LPAD(t.TID,6,"0") AS TeacherID,
             t.NAME AS TeacherName,
             t.SURNAME AS TeacherSurname
             FROM Courses c LEFT JOIN Teachers t ON c.TID = t.TID

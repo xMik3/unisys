@@ -13,7 +13,12 @@ export async function loginController(req,res){
   let userType = req.body.userType;
 
   if(userType === "Secretary" && userPWD === process.env.SECRETARY_PWD && userID === 0){
-    return res.json({status: "success", message: "Login Successful", token:generateToken(userID,userType)});
+    if(userPWD==process.env.SECRETARY_PWD && userID==0){
+      return res.json({status: "success", message: "Login Successful", token:generateToken(userID,userType)});
+    }
+    else{
+      return res.json({status: "error", message: "Incorrect Credentials" });
+    }
   }
 
   let user;

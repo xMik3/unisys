@@ -46,15 +46,27 @@ export async function addCourseController(req,res){
 export async function assignTeacherController(req,res){
     let courseID = req.params.courseID;
     let teacherID = req.params.teacherID;
+    let returnMessage;
 
     try{
-        let teacher = await getTeacher(teacherID);
-        if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
-
+        
+        if(teacherID=="NULL"){
+            teacherID = null;
+            returnMessage = "Teacher unassigned";
+        }
+        else{
+            let teacher = await getTeacher(teacherID);
+            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
+            returnMessage = "Teacher assigned";
+        }
+        
         let result = await assignTeacher(teacherID,courseID);
         if(result.affectedRows==0) return res.status(400).json( {status: "error", message: "Course does not exist"} );
+        
 
-        return res.status(200).json({status: "success", message: "Teacher assigned"});
+        return res.status(200).json({status: "success", message: returnMessage});
+
+
     }
     catch(error){
         return res.status(500).json( {status: "error", message : "Database error" });
