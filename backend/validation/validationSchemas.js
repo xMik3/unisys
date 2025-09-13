@@ -32,11 +32,6 @@ export const teacherCredentialsSchema = joi.object({
   teacherPWD : pwdSchema
 });
 
-export const teacherAssignSchema = joi.object({
-  courseID : paramSchema,
-  teacherID : paramSchema.allow("NULL")
-});
-
 export const studentAddCredentialsSchema = joi.object({
   studentName : nameSchema,
   studentSurname : nameSchema,
@@ -52,6 +47,7 @@ export const studentEditCredentialsSchema = joi.object({
 
 export const courseSchema = joi.object({
   courseName: nameSchema,
-  courseSemester: semesterSchema
+  courseSemester: semesterSchema,
+  teacherID: idSchema.allow("NULL")
 });
 

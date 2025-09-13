@@ -1,4 +1,4 @@
-import {getCourses,getCourse,addCourse,editCourse,removeCourse,assignTeacher} from "../db/courseManagementQueries.js";
+import {getCourses,getCourse,addCourse,editCourse,removeCourse} from "../db/courseManagementQueries.js";
 import {getTeacher} from "../db/teacherManagementQueries.js";
 
 
@@ -32,9 +32,19 @@ export async function getCourseController(req,res){
 export async function addCourseController(req,res){
     let courseName = req.body.courseName;
     let courseSemester = req.body.courseSemester;
+    let teacherID = req.body.teacherID;
 
     try{
-        let courseID = await addCourse(courseName,courseSemester);
+
+        if(teacherID=="NULL"){
+            teacherID = null;
+        }
+        else{
+            let teacher = await getTeacher(teacherID);
+            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
+        }
+
+        let courseID = await addCourse(courseName,courseSemester,teacherID);
         return res.status(200).json({status: "success", message: "Course added", courseID: courseID});
     }
     catch(error){
@@ -43,44 +53,23 @@ export async function addCourseController(req,res){
 
 }
 
-export async function assignTeacherController(req,res){
-    let courseID = req.params.courseID;
-    let teacherID = req.params.teacherID;
-    let returnMessage;
-
-    try{
-        
-        if(teacherID=="NULL"){
-            teacherID = null;
-            returnMessage = "Teacher unassigned";
-        }
-        else{
-            let teacher = await getTeacher(teacherID);
-            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
-            returnMessage = "Teacher assigned";
-        }
-        
-        let result = await assignTeacher(teacherID,courseID);
-        if(result.affectedRows==0) return res.status(400).json( {status: "error", message: "Course does not exist"} );
-        
-
-        return res.status(200).json({status: "success", message: returnMessage});
-
-
-    }
-    catch(error){
-        return res.status(500).json( {status: "error", message : "Database error" });
-    }
-    
-}
-
 export async function editCourseController(req,res){
     let courseID = req.params.courseID;
     let courseName = req.body.courseName;
     let courseSemester = req.body.courseSemester;
+    let teacherID = req.body.teacherID;
 
     try{
-        let result = await editCourse(courseName,courseSemester,courseID);
+
+        if(teacherID=="NULL"){
+            teacherID = null;
+        }
+        else{
+            let teacher = await getTeacher(teacherID);
+            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
+        }
+
+        let result = await editCourse(courseName,courseSemester,teacherID,courseID);
         if(result.affectedRows==0) return res.status(400).json({status: "error", message : "Course does not exist"} );
 
         return res.status(200).json({status: "success", message : "Course edited"});
