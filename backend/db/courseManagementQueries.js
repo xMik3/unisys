@@ -38,9 +38,9 @@ export async function getCourse(courseID){
     }
 }
 
-export async function addCourse(courseName,courseSemester){
+export async function addCourse(courseName,courseSemester,teacherID){
     try{
-        const [result] = await db.promise().query(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,NULL);`,[courseName,courseSemester]);
+        const [result] = await db.promise().query(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,?);`,[courseName,courseSemester,teacherID]);
         return String(result.insertId).padStart(6,'0');
     }
     catch(error){
@@ -48,13 +48,13 @@ export async function addCourse(courseName,courseSemester){
     }
 }
 
-export async function editCourse(courseName,courseSemester,courseID){
+export async function editCourse(courseName,courseSemester,teacherID,courseID){
     try{
         return await db.promise().query(
         `UPDATE Courses
-        SET NAME=?, SEMESTER=?
+        SET NAME=?, SEMESTER=?, TID=?
         WHERE CID=?;`,
-        [courseName,courseSemester,courseID]
+        [courseName,courseSemester,teacherID,courseID]
         );
     }
     catch(error){
@@ -68,20 +68,6 @@ export async function removeCourse(courseID){
         if(attends[0].length>0) throw new Error("Cannot delete course with enrolled students");
         
         return db.promise().query(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
-    }
-    catch(error){
-        throw error;
-    }
-}
-
-export async function assignTeacher(teacherID,courseID){
-    try{
-        return await db.promise().query(
-            `UPDATE Courses
-            SET TID = ?
-            WHERE CID = ?;`,
-            [teacherID,courseID]
-        );
     }
     catch(error){
         throw error;
