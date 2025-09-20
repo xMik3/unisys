@@ -6,7 +6,6 @@ CREATE TABLE Students(
     SURNAME VARCHAR(30) NOT NULL,
     SEMESTER INT NOT NULL,
     PASSWORD VARCHAR(60) NOT NULL,
-    AVAILCOURSES INT NOT NULL,
     ENROLLMENTYEAR INT NOT NULL,
     PRIMARY KEY(SID)
 );
@@ -37,31 +36,31 @@ CREATE TABLE Attends(
     FOREIGN KEY(CID) REFERENCES Courses(CID)
 );
  
-INSERT INTO Students(NAME,SURNAME,SEMESTER,PASSWORD,AVAILCOURSES,ENROLLMENTYEAR) VALUES
-('Andreas','Kostopoulos',1,'$2b$10$zTDE2lUmmuuop8MdgWRJ9.i0KOywH3wQIFjz.7OvOlO1ja1bN3vv.',6,2024),
-('Nikolas','Papadakis',2,'$2b$10$iRD8CvS8cEa.k.M/VMn/VeRKwXUjsIOi6SHHuWsAG236swFSKr8/e',6,2023),
-('Sofia','Lazarou',3,'$2b$10$.SRELDGOJjhwny/nlZBWZOgao6IDJjYHMe72JJh/htiH.CtdbusEi',6,2022),
-('Katerina','Georgiou',4,'$2b$10$F4r/e0bTf7b18LSA6f01y.j0CeRSxYL00XWGjDER47yk9f.5MrxkC',6,2022),
-('Vasileios','Markakis',5,'$2b$10$upkvNsLjRNpeGWegc.miL.Zc44KWxDebUUZsojtA/do7Vndp/2FBy',6,2021),
-('Panagiota','Sidiropoulou',2,'$2b$10$ik5xwfKJzzQrD5e9QwI.ye./Ug5neF/t5Wo4V8ueRU0./DdV0TwIm',6,2024),
-('Christos','Alexandris',6,'$2b$10$e1eKk76YLjrs49hXkR/rBONvrEMAHD6f5zqNW4VhBH/kUpzoOx76y',6,2022),
-('Eftychia','Mitsopoulou',3,'$2b$10$MiEEutrwKCAYLypaVxzAKeNslSbdYSt/tRANoSSijCdiQIJtEHTNG',6,2023),
-('Theodoros','Vassilakis',5,'$2b$10$10OZRjp62JhurGtFIrcG.e0TQvftH2akSbKm4fNUGHPFX9WCQ6txe',6,2021),
-('Ioanna','Raptis',4,'$2b$10$g3sqbAKFFoGEwpnHbb5OH.x/N62XkF9dj.sVTlu12VOuIy4uR2NBi',6,2023),
-('Spyros','Damaskos',6,'$2b$10$u0.hK.N7WLCouhCpYPliYeV1LLMdg/1UsMdeS4jT0UJNFrcVchEa.',6,2022),
-('Maria','Xanthopoulou',1,'$2b$10$OTmPSEetq0oD/nZjnA.vHeiRKsbeunyy1XAYA5ziNJqnfeF.Ia71W',6,2024),
-('Dimitrios','Karalis',7,'$2b$10$JcQw15PAQvsulfGQlpj2Quu2n3DYho1O2jqjGte8ZfbO7cYfOWdmu',6,2021),
-('Eleni','Papanikolaou',2,'$2b$10$I0rWKMQig1MpbUE4NRfP.eqtWoPYI4APylbAGpQZD/0uZApMUMDjC',6,2024),
-('Giorgos','Simopoulos',8,'$2b$10$Y/fs3E7B6VyHBSDfspEKGee48q5qFcNsLk3pX7cAPjTuLtLSAALp.',6,2020),
-('Antonis','Kalogeras',5,'$2b$10$Jk6uq6FT2ir6EmaI3mxCxOQUQbYWt6AoBgZPM5mTk43XYij7QFeEi',6,2022),
-('Nikos','Economou',3,'$2b$10$NilWR9RQIUtwgWl36SqOP.seKkymO9xleA78OI.RuduWTXpgC48sK',6,2023),
-('Anastasia','Kyriazis',4,'$2b$10$CXJBB..UQKw88pVCvhuA/ezyrYUVErHtvEBJZnX476HW.RGPZAVLa',6,2023),
-('Michalis','Tsakiris',6,'$2b$10$uhCDVOoK2c1h8e4wdt3RB.k3GvxqU2s65fXGQeGax9dS0FJcUp89O',6,2021),
-('Vasiliki','Tsiolis',2,'$2b$10$aBjCDwyQGbnJzXBUaZfPCezLw1JTYORjScCNrM3mPZ1xrvuk2vEGW',6,2024);
+INSERT INTO Students(NAME,SURNAME,SEMESTER,PASSWORD,ENROLLMENTYEAR) VALUES
+('Andreas','Kostopoulos',1,'$2b$10$zTDE2lUmmuuop8MdgWRJ9.i0KOywH3wQIFjz.7OvOlO1ja1bN3vv.',2024),
+('Nikolas','Papadakis',2,'$2b$10$iRD8CvS8cEa.k.M/VMn/VeRKwXUjsIOi6SHHuWsAG236swFSKr8/e',2023),
+('Sofia','Lazarou',3,'$2b$10$.SRELDGOJjhwny/nlZBWZOgao6IDJjYHMe72JJh/htiH.CtdbusEi',2022),
+('Katerina','Georgiou',4,'$2b$10$F4r/e0bTf7b18LSA6f01y.j0CeRSxYL00XWGjDER47yk9f.5MrxkC',2022),
+('Vasileios','Markakis',5,'$2b$10$upkvNsLjRNpeGWegc.miL.Zc44KWxDebUUZsojtA/do7Vndp/2FBy',2021),
+('Panagiota','Sidiropoulou',2,'$2b$10$ik5xwfKJzzQrD5e9QwI.ye./Ug5neF/t5Wo4V8ueRU0./DdV0TwIm',2024),
+('Christos','Alexandris',6,'$2b$10$e1eKk76YLjrs49hXkR/rBONvrEMAHD6f5zqNW4VhBH/kUpzoOx76y',2022),
+('Eftychia','Mitsopoulou',3,'$2b$10$MiEEutrwKCAYLypaVxzAKeNslSbdYSt/tRANoSSijCdiQIJtEHTNG',2023),
+('Theodoros','Vassilakis',5,'$2b$10$10OZRjp62JhurGtFIrcG.e0TQvftH2akSbKm4fNUGHPFX9WCQ6txe',2021),
+('Ioanna','Raptis',4,'$2b$10$g3sqbAKFFoGEwpnHbb5OH.x/N62XkF9dj.sVTlu12VOuIy4uR2NBi',2023),
+('Spyros','Damaskos',6,'$2b$10$u0.hK.N7WLCouhCpYPliYeV1LLMdg/1UsMdeS4jT0UJNFrcVchEa.',2022),
+('Maria','Xanthopoulou',1,'$2b$10$OTmPSEetq0oD/nZjnA.vHeiRKsbeunyy1XAYA5ziNJqnfeF.Ia71W',2024),
+('Dimitrios','Karalis',7,'$2b$10$JcQw15PAQvsulfGQlpj2Quu2n3DYho1O2jqjGte8ZfbO7cYfOWdmu',2021),
+('Eleni','Papanikolaou',2,'$2b$10$I0rWKMQig1MpbUE4NRfP.eqtWoPYI4APylbAGpQZD/0uZApMUMDjC',2024),
+('Giorgos','Simopoulos',8,'$2b$10$Y/fs3E7B6VyHBSDfspEKGee48q5qFcNsLk3pX7cAPjTuLtLSAALp.',2020),
+('Antonis','Kalogeras',5,'$2b$10$Jk6uq6FT2ir6EmaI3mxCxOQUQbYWt6AoBgZPM5mTk43XYij7QFeEi',2022),
+('Nikos','Economou',3,'$2b$10$NilWR9RQIUtwgWl36SqOP.seKkymO9xleA78OI.RuduWTXpgC48sK',2023),
+('Anastasia','Kyriazis',4,'$2b$10$CXJBB..UQKw88pVCvhuA/ezyrYUVErHtvEBJZnX476HW.RGPZAVLa',2023),
+('Michalis','Tsakiris',6,'$2b$10$uhCDVOoK2c1h8e4wdt3RB.k3GvxqU2s65fXGQeGax9dS0FJcUp89O',2021),
+('Vasiliki','Tsiolis',2,'$2b$10$aBjCDwyQGbnJzXBUaZfPCezLw1JTYORjScCNrM3mPZ1xrvuk2vEGW',2024);
 
 INSERT INTO Teachers(NAME,SURNAME,PASSWORD) VALUES
 ('Ioannis','Giannakopoulos','$2b$10$3Q3EMEp0tYnsdddGxAsXfOsFMxjAzMnf8E2VZT.HUgHbY/z6X/sKi'),
-('Stavros','Papadopoulou','$2b$10$.w9v6tOVd.iWg8TdxX13ku3WOV9.k4Nd3A7zXpiALQ.1qie/cBiVO'),
+('Stavros','Papadopoulos','$2b$10$.w9v6tOVd.iWg8TdxX13ku3WOV9.k4Nd3A7zXpiALQ.1qie/cBiVO'),
 ('Ioannis','Vlachos','$2b$10$0n8S/wRJwVMmfuVmgAXv.eOrMA98EYVmp0Nw4/tf6lmULC3q5s1s6'),
 ('Maria','Kotsou','$2b$10$KAWjCLh9wKkvMC4GdGgBd.1vvRJNp/WdKTokXzuYlNyXJrV2tJ7mu'),
 ('Konstantinos','Nikiforakis','$2b$10$AJeBTNAWdD6K0/VRLO/rx.SLzE/ra5uo1WMJYr0C3nQx5d9X0hNSK'),

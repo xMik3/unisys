@@ -30,6 +30,10 @@ export async function registerCoursesController(req,res){
   let courses = req.courses;
 
   try{
+    let registeredCoursesCount = await getRegisteredCourses(studentID);
+
+    if(7-registeredCoursesCount.length-courses.length<0) return res.status(400).json({status: "error", message: "Cannot register to more than 7 courses"});
+
     await registerCourses(studentID,courses);
 
     return res.status(200).json({status: "success", message : "Registered To Courses"});
