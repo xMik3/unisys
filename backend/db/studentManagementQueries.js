@@ -7,7 +7,6 @@ export async function getStudents(year){
             NAME AS Name,
             SURNAME AS Surname,
             SEMESTER AS Semester,
-            AVAILCOURSES AS AvailableCourses,
             ENROLLMENTYEAR AS EnrollmentYear 
             FROM Students 
             WHERE ENROLLMENTYEAR=?;`,
@@ -26,7 +25,6 @@ export async function getStudent(studentID){
             NAME AS Name,
             SURNAME AS Surname,
             SEMESTER AS Semester,
-            AVAILCOURSES AS AvailableCourses,
             ENROLLMENTYEAR AS EnrollmentYear 
             FROM Students 
             WHERE SID=?;`,
@@ -50,7 +48,7 @@ export async function getStudentPassword(studentID){
 
 export async function addStudent(studentName,studentSurname,studentPWD,studentEnrollmentYear,studentSemester){
     try{
-        const [result] = await db.promise().query(`INSERT INTO Students (NAME,SURNAME,SEMESTER,PASSWORD,AVAILCOURSES,ENROLLMENTYEAR) VALUES(?,?,?,?,7,?);`,[studentName,studentSurname,studentSemester,studentPWD,studentEnrollmentYear]);
+        const [result] = await db.promise().query(`INSERT INTO Students (NAME,SURNAME,SEMESTER,PASSWORD,ENROLLMENTYEAR) VALUES(?,?,?,?,?);`,[studentName,studentSurname,studentSemester,studentPWD,studentEnrollmentYear]);
         return String(result.insertId).padStart(6,'0');
     }
     catch(error){

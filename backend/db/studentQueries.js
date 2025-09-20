@@ -63,7 +63,7 @@ export async function registerCourses(studentID,courses){
 
 export async function unregisterCourse(studentID,courseID){
     try{
-        return await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND GRADE IS NULL;`,[studentID,courseID]);
+        return await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND (GRADE IS NULL OR GRADE<5);`,[studentID,courseID]);
     }
     catch(error){
         throw error;
@@ -79,6 +79,22 @@ export async function getSemesters(studentID,courseID){
           [studentID,courseID]
         );
         return semesters[0][0];
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+export async function getRegisteredCoursesCount(studentID){
+    try{
+        let count = await db.promise().query(
+            `SELECT COUNT(CID) AS registeredCourses
+            FROM Attends 
+            WHERE SID=? AND (GRADE IS NULL OR GRADE < 5);
+            `,
+            [studentID]
+        );
+        return count[0][0];
     }
     catch(error){
         throw error;
