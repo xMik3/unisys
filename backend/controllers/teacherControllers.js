@@ -1,4 +1,6 @@
 import {getManagedCourses, getManagedStudents, gradeStudent} from "../db/teacherQueries.js";
+import { getCourse } from "../db/courseManagementQueries.js";
+
 
 export async function getManagedCoursesController(req,res){
   let teacherID = req.userID;
@@ -34,7 +36,15 @@ export async function gradeStudentController(req,res){
   
   try{
     let result = await gradeStudent(grade,studentID,courseID,userID);
-    if(result.affectedRows==0) return res.status(403).json({status: "error", message: "Unauthorized To Grade This Student" });
+    if(result.affectedRows==0){
+      let course = await getCourse(courseID);
+
+      if(course.length==0) return res.status(404).json({status: "error", message: "Course not found"});
+      
+      if(course[0].TeacherID != userID) return res.status(403).json({status: "error", message: "Access denied"});
+
+      return res.status(404).json({status: "error", message: "Student not enrolled in course"});
+    }
 
     return res.status(200).json({status:"success", message: "Student graded" });
   }

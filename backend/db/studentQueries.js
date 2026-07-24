@@ -19,7 +19,6 @@ export async function getRegisteredCourses(studentID){
         return courses[0];
     }
     catch(error){
-        console.log(error);
         throw error;
     }
 }
@@ -44,7 +43,6 @@ export async function getAvailableCourses(studentID){
         return courses[0];
     }
     catch(error){
-        console.log(error);
         throw error;
     }
 }
@@ -56,7 +54,6 @@ export async function registerCourses(studentID,courses){
         return await db.promise().query(`INSERT INTO Attends (SID, CID, GRADE) VALUES ?;`,[values]);
     }
     catch(error){
-        console.log(error);
         throw error;
     }
 }
