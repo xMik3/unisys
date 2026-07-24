@@ -1,0 +1,10 @@
+PORT=
+JWT_SECRET=
+SECRETARY_PWD=
+
+DB_HOST=database
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=universityBranch
+
+SALT_ROUNDS=10
