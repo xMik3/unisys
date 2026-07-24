@@ -13,7 +13,7 @@ export function validateParameters(req,res,next){
 
   for(const element in req.params){
 
-    const {error,value} = paramSchema.validate(req.params[element]);
+    const {error,value} = idSchema.validate(req.params[element]);
   
     if(error) return res.status(401).json({ status:"error", message: "Invalid Input"});
 
