@@ -1,4 +1,4 @@
-import {getRegisteredCourses,registerCourses, unregisterCourse,getAvailableCourses} from "../db/studentQueries.js"
+import {getRegisteredCourses,getRegisteredCoursesCount,registerCourses, unregisterCourse,getAvailableCourses} from "../db/studentQueries.js"
 
 export async function getRegisteredCoursesController(req,res){
   let studentID = req.userID;
@@ -30,9 +30,15 @@ export async function registerCoursesController(req,res){
   let courses = req.courses;
 
   try{
-    let registeredCoursesCount = await getRegisteredCourses(studentID);
+    let registeredCoursesCount = await getRegisteredCoursesCount(studentID);
 
-    if(7-registeredCoursesCount.length-courses.length<0) return res.status(400).json({status: "error", message: "Cannot register to more than 7 courses"});
+    if(7-registeredCoursesCount.registeredCourses-courses.length<0) return res.status(400).json({status: "error", message: "Cannot register to more than 7 courses"});
+
+    let availableCourses = await getAvailableCourses(studentID);
+    let availableIDs = new Set(availableCourses.map(c => c.ID));
+
+    let invalidCourse = courses.find(course => !availableIDs.has(course));
+    if(invalidCourse) return res.status(400).json({status:"error", message: "Course With ID " + invalidCourse + " Is Not Available To This Student"});
 
     await registerCourses(studentID,courses);
 
@@ -54,7 +60,7 @@ export async function removeCourseController(req,res){
     let result = await unregisterCourse(studentID,courseID);
     if(result.affectedRows==0) return res.status(404).json({status: "error", message: "Student not enrolled in course"});
 
-    return res.status(200).json({status: "error", message : "Removed From Course"});
+    return res.status(200).json({status: "success", message : "Removed From Course"});
   }
   catch(error){
     return res.status(500).json({status: "error", message : "Database error"});
