@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const idSchema = joi.string().pattern(/^[0-9]{6}/).required();
+export const idSchema = joi.string().pattern(/^[0-9]{6}$/).required();
 
 const pwdSchema = joi.string().min(3).max(20).required();
 
