@@ -41,7 +41,7 @@ export async function addCourseController(req,res){
         }
         else{
             let teacher = await getTeacher(teacherID);
-            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
+            if(teacher.length===0) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
         }
 
         let courseID = await addCourse(courseName,courseSemester,teacherID);
@@ -66,7 +66,7 @@ export async function editCourseController(req,res){
         }
         else{
             let teacher = await getTeacher(teacherID);
-            if(!teacher) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
+            if(teacher.length===0) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
         }
 
         let result = await editCourse(courseName,courseSemester,teacherID,courseID);

@@ -36,9 +36,9 @@ export async function addTeacherController(req,res){
     let teacherSurname = req.body.teacherSurname;
     let teacherPWD = req.body.teacherPWD;
 
-    let hashedTeacherPWD = await bcrypt.hash(teacherPWD,parseInt(process.env.SALT_ROUNDS));
-
     try{
+        let hashedTeacherPWD = await bcrypt.hash(teacherPWD,parseInt(process.env.SALT_ROUNDS));
+
         let teacherID = await addTeacher(teacherName,teacherSurname,hashedTeacherPWD);
         return res.status(200).json({status: "success", message : "Teacher added",teacherID: teacherID  });
     }
@@ -54,9 +54,9 @@ export async function editTeacherController(req,res){
     let teacherSurname = req.body.teacherSurname;
     let teacherPWD = req.body.teacherPWD;
 
-    let hashedTeacherPWD = await bcrypt.hash(teacherPWD,parseInt(process.env.SALT_ROUNDS));
-
     try{
+        let hashedTeacherPWD = await bcrypt.hash(teacherPWD,parseInt(process.env.SALT_ROUNDS));
+
         let result = await editTeacher(teacherName,teacherSurname,hashedTeacherPWD,teacherID);
         if(result.affectedRows==0) return res.status(400).json({status: "error", message: "Teacher does not exist"} );
 

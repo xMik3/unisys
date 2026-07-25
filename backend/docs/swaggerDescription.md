@@ -1,4 +1,4 @@
-University management REST API — JWT auth, role-based access. For this demo there are available Teacher and Student accounts for you to test. Access to the Secretary account is not provided due to this demo's public nature.
+University management REST API with JWT auth, role-based access. For this demo there are available Teacher and Student accounts for you to test. Access to the Secretary account is not provided due to this demo's public nature.
 
 GitHub : [https://github.com/xMik3/unisys](https://github.com/xMik3/unisys)
 

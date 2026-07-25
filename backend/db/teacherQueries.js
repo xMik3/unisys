@@ -36,13 +36,14 @@ export async function getManagedStudents(courseID,teacherID){
 
 export async function gradeStudent(grade,studentID,courseID,teacherID){
     try{
-       return await db.promise().query(
+       const [result] = await db.promise().query(
         `UPDATE Attends a
         JOIN Courses c ON a.CID = c.CID
         SET a.GRADE = ?
         WHERE a.SID = ? AND a.CID = ? AND c.TID = ?;`,
         [grade,studentID,courseID,teacherID]
        ); 
+       return result;
     }catch(error){
        throw error; 
     }

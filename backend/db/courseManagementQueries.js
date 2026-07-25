@@ -50,12 +50,13 @@ export async function addCourse(courseName,courseSemester,teacherID){
 
 export async function editCourse(courseName,courseSemester,teacherID,courseID){
     try{
-        return await db.promise().query(
+        const [result] = await db.promise().query(
         `UPDATE Courses
         SET NAME=?, SEMESTER=?, TID=?
         WHERE CID=?;`,
         [courseName,courseSemester,teacherID,courseID]
         );
+        return result;
     }
     catch(error){
         throw(error);
@@ -67,7 +68,8 @@ export async function removeCourse(courseID){
         let attends = await db.promise().query(`SELECT * FROM Attends WHERE CID=?;`,[courseID]);
         if(attends[0].length>0) throw new Error("Cannot delete course with enrolled students");
         
-        return db.promise().query(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
+        const [result] = db.promise().query(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
+        return result;
     }
     catch(error){
         throw error;

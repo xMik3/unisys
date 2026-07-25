@@ -52,12 +52,13 @@ export async function addTeacher(teacherName,teacherSurname,teacherPWD){
 
 export async function editTeacher(teacherName,teacherSurname,teacherPWD,teacherID){
     try{
-        return await db.promise().query(
+        const [result] =  await db.promise().query(
         `UPDATE Teachers
         SET NAME=?, SURNAME=?, PASSWORD=?
         WHERE TID=?;`,
         [teacherName,teacherSurname,teacherPWD,teacherID]
         );
+        return result;
     }
     catch(error){
         throw(error);
@@ -66,7 +67,8 @@ export async function editTeacher(teacherName,teacherSurname,teacherPWD,teacherI
 
 export async function removeTeacher(teacherID){
     try{
-        return db.promise().query(`DELETE FROM Teachers WHERE TID=?;`,[teacherID]);
+        const [result] =  db.promise().query(`DELETE FROM Teachers WHERE TID=?;`,[teacherID]);
+        return result;
     }
     catch(error){
         throw error;
