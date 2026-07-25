@@ -23,9 +23,9 @@ const options = {
         {name: "Secretary - Student Management"},
         {name: "Secretary - Teacher Management"}
     ],
-    security: [{bearerAuth: []}], // applies to every route by default
+    security: [{bearerAuth: []}],
   },
-  apis: ['./routes/*.js'], // where your annotated routes live
+  apis: ['./routes/*.js'],
 };
 
 export default swaggerJsdoc(options);

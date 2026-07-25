@@ -6,7 +6,7 @@ const pwdSchema = joi.string().min(3).max(20).required();
 
 const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").required();
 
-const nameSchema = joi.string().pattern(/[a-zA-Z ]+/).min(4).max(30).required();
+const nameSchema = joi.string().pattern(/^[a-zA-Z ]+$/).min(4).max(30).required();
 
 const yearSchema = joi.number().integer().positive().min(2000).max(parseInt(new Date().getFullYear())).required();
 

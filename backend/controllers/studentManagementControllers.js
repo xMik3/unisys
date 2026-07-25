@@ -41,9 +41,9 @@ export async function addStudentController(req,res){
     let studentEnrollmentYear = req.body.studentEnrollmentYear;
     let studentSemester = 1+2*(parseInt(new Date().getFullYear()) - parseInt(studentEnrollmentYear));
 
-    let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
-
     try{
+        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
+
         let studentID = await addStudent(studentName,studentSurname,hashedStudentPWD,studentEnrollmentYear,studentSemester);
         return res.status(200).json({ status: "success", message: "Student added", studentID: studentID });
     }
@@ -59,9 +59,9 @@ export async function editStudentController(req,res){
     let studentSurname = req.body.studentSurname;
     let studentPWD = req.body.studentPWD;
 
-    let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
-
     try{
+        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
+
         let result = await editStudent(studentName,studentSurname,hashedStudentPWD,studentID);
         if(result.affectedRows==0) return res.status(400).json({status: "error", message : "Student does not exist"} );
 

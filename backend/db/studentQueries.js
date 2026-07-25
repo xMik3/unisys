@@ -60,7 +60,8 @@ export async function registerCourses(studentID,courses){
 
 export async function unregisterCourse(studentID,courseID){
     try{
-        return await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND (GRADE IS NULL OR GRADE<5);`,[studentID,courseID]);
+        const [result] = await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND (GRADE IS NULL OR GRADE<5);`,[studentID,courseID]);
+        return result;
     }
     catch(error){
         throw error;
