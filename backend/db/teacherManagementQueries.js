@@ -67,7 +67,7 @@ export async function editTeacher(teacherName,teacherSurname,teacherPWD,teacherI
 
 export async function removeTeacher(teacherID){
     try{
-        const [result] =  db.promise().query(`DELETE FROM Teachers WHERE TID=?;`,[teacherID]);
+        const [result] = await db.promise().query(`DELETE FROM Teachers WHERE TID=?;`,[teacherID]);
         return result;
     }
     catch(error){

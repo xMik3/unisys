@@ -73,7 +73,7 @@ export async function editStudent(studentName,studentSurname,studentPWD,studentI
 
 export async function removeStudent(studentID){
     try{
-        const [result] = db.promise().query(`DELETE FROM Students WHERE SID=?;`,[studentID]);
+        const [result] = await db.promise().query(`DELETE FROM Students WHERE SID=?;`,[studentID]);
         return result;
     }
     catch(error){
