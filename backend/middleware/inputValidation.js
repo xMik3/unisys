@@ -73,7 +73,7 @@ export function validateYear(req,res,next){
 
 export function validateCourses(req,res,next){
   let courses = req.body.courses;
-  if(!Array.isArray(courses) || courses.length===0) return res.status(401).json({ status:"error", message:"Invalid Input"});
+  if(!Array.isArray(courses) || courses.length===0) return res.status(400).json({ status:"error", message:"Invalid Input"});
 
   for(const course of courses){
     const {error,value} = idSchema.validate(course);
