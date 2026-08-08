@@ -1,4 +1,7 @@
 import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
 import authRoutes from "./routes/authRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
@@ -8,7 +11,10 @@ import secretaryStudentRoutes from "./routes/studentManagementRoutes.js";
 import secretaryTeacherRoutes from "./routes/teacherManagementRoutes.js";
 import swaggerRoutes from "./routes/swaggerRoutes.js";
 
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "").split(",").map(origin => origin.trim()).filter(Boolean);
+
 const app = express();
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.use(swaggerRoutes);

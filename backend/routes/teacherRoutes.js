@@ -12,7 +12,7 @@ const router = express.Router();
  * /managedCourses:
  *   get:
  *     tags: [Teacher]
- *     summary: Get the courses managed by the authenticated teacher
+ *     summary: Get The Courses Managed By The Authenticated Teacher
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -68,7 +68,7 @@ router.get("/managedCourses", authenticateToken, isTeacher, getManagedCoursesCon
  * /managedCourses/{courseID}/students:
  *   get:
  *     tags: [Teacher]
- *     summary: Get the ungraded students of a course managed by the authenticated teacher
+ *     summary: Get The Ungraded Students Of A Course Managed By The Authenticated Teacher
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -130,7 +130,7 @@ router.get("/managedCourses/:courseID/students", authenticateToken, isTeacher, v
  * /managedCourses/{courseID}/students/{studentID}:
  *   patch:
  *     tags: [Teacher]
- *     summary: Grade a student in a course managed by the authenticated teacher, teachers can grade the same student more than once.
+ *     summary: Grade A Student In A Course Managed By The Authenticated Teacher, Teachers Can Grade The Same Student More Than Once.
  *     security:
  *       - bearerAuth: []
  *     parameters:
