@@ -5,7 +5,7 @@ const options = {
   definition: {
     openapi: '3.0.3',
     info: {title: 'UniSys API', version: '1.4.0', description: fs.readFileSync("./docs/swaggerDescription.md","utf-8")},
-    servers: [{ url: 'http://localhost:3000' }],
+    servers: [{ url: 'https://unisys.250724.xyz' }],
     components: {
       securitySchemes: {
         bearerAuth: {
