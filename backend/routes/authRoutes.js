@@ -39,18 +39,27 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
- *                 token: {type: string}
- *       401:
- *         description: Invalid Input, Or User Not Found, Or Invalid Credentials
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Login Successful"}
+ *                 token: {type: string, example: "eySajsWsla..."}
+ *       400:
+ *         description: Invalid Input
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
+ *       401:
+ *         description: Incorrect Credentials, Or User Not Found, Or Invalid Credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Incorrect Credentials"}
  *       500:
  *         description: Database Error, Or Authentication Error
  *         content:
@@ -58,8 +67,8 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.post("/login", loginLimiter, validateLoginInput, loginController);
 

@@ -36,27 +36,36 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
- *                 teacherID: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Teacher added"}
+ *                 teacherID: {type: string, example: "000002"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Teacher Credentials Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -64,8 +73,8 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.put("/teachers",authenticateToken,isSecretary,validateTeacherCredentials,addTeacherController);
 
@@ -85,34 +94,34 @@ router.put("/teachers",authenticateToken,isSecretary,validateTeacherCredentials,
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Teachers Retrieved"}
  *                 teachers:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       ID: {type: string}
- *                       Name: {type: string}
- *                       Surname: {type: string}
+ *                       ID: {type: string, example: "000001"}
+ *                       Name: {type: string, example: "Ioannis"}
+ *                       Surname: {type: string, example: "Giannakopoulos"}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: No Teachers Found
  *         content:
@@ -120,8 +129,8 @@ router.put("/teachers",authenticateToken,isSecretary,validateTeacherCredentials,
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No teachers found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -129,8 +138,8 @@ router.put("/teachers",authenticateToken,isSecretary,validateTeacherCredentials,
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/teachers",authenticateToken,isSecretary,getTeachersController);
 
@@ -156,32 +165,41 @@ router.get("/teachers",authenticateToken,isSecretary,getTeachersController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Teacher Retrieved"}
  *                 teacher:
  *                   type: object
  *                   properties:
- *                     ID: {type: string}
- *                     Name: {type: string}
- *                     Surname: {type: string}
+ *                     ID: {type: string, example: "000001"}
+ *                     Name: {type: string, example: "Ioannis"}
+ *                     Surname: {type: string, example: "Giannakopoulos"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Teacher ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Teacher Not Found
  *         content:
@@ -189,8 +207,8 @@ router.get("/teachers",authenticateToken,isSecretary,getTeachersController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Teacher not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -198,8 +216,8 @@ router.get("/teachers",authenticateToken,isSecretary,getTeachersController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/teachers/:teacherID",authenticateToken,isSecretary,validateParameters,getTeacherController);
 
@@ -236,35 +254,35 @@ router.get("/teachers/:teacherID",authenticateToken,isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Teacher edited"}
  *       400:
- *         description: Teacher Does Not Exist
+ *         description: Invalid Input, Or Teacher Does Not Exist
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Teacher ID Or Input Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -272,8 +290,8 @@ router.get("/teachers/:teacherID",authenticateToken,isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.patch("/teachers/:teacherID",authenticateToken,isSecretary,validateParameters,validateTeacherCredentials,editTeacherController);
 
@@ -299,26 +317,35 @@ router.patch("/teachers/:teacherID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Teacher removed"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Teacher ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Teacher Not Found
  *         content:
@@ -326,8 +353,8 @@ router.patch("/teachers/:teacherID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Teacher not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -335,8 +362,8 @@ router.patch("/teachers/:teacherID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.delete("/teachers/:teacherID",authenticateToken,isSecretary,validateParameters,removeTeacherController);
 

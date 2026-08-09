@@ -36,36 +36,36 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
- *                 courseID: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Course added"}
+ *                 courseID: {type: string, example: "000013"}
  *       400:
- *         description: Teacher Does Not Exist
+ *         description: Invalid Input, Or Teacher Does Not Exist
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Course Input Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -73,8 +73,8 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.put("/courses", authenticateToken, isSecretary,  validateCourseInput, addCourseController);
 
@@ -94,37 +94,37 @@ router.put("/courses", authenticateToken, isSecretary,  validateCourseInput, add
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Courses Sent"}
  *                 courses:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       ID: {type: string}
- *                       Name: {type: string}
- *                       Semester: {type: integer}
- *                       TeacherID: {type: string, nullable: true}
- *                       TeacherName: {type: string, nullable: true}
- *                       TeacherSurname: {type: string, nullable: true}
+ *                       ID: {type: string, example: "000013"}
+ *                       Name: {type: string, example: "Software Engineering"}
+ *                       Semester: {type: integer, example: 3}
+ *                       TeacherID: {type: string, nullable: true, example: "000001"}
+ *                       TeacherName: {type: string, nullable: true, example: "Ioannis"}
+ *                       TeacherSurname: {type: string, nullable: true, example: "Giannakopoulos"}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: No Courses Found
  *         content:
@@ -132,8 +132,8 @@ router.put("/courses", authenticateToken, isSecretary,  validateCourseInput, add
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No courses found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -141,8 +141,8 @@ router.put("/courses", authenticateToken, isSecretary,  validateCourseInput, add
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/courses", authenticateToken, isSecretary, getCoursesController);
 
@@ -168,35 +168,44 @@ router.get("/courses", authenticateToken, isSecretary, getCoursesController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Course Retrieved"}
  *                 course:
  *                   type: object
  *                   properties:
- *                     ID: {type: string}
- *                     Name: {type: string}
- *                     Semester: {type: integer}
- *                     TeacherID: {type: string, nullable: true}
- *                     TeacherName: {type: string, nullable: true}
- *                     TeacherSurname: {type: string, nullable: true}
+ *                     ID: {type: string, example: "000013"}
+ *                     Name: {type: string, example: "Software Engineering"}
+ *                     Semester: {type: integer, example: 3}
+ *                     TeacherID: {type: string, nullable: true, example: "000001"}
+ *                     TeacherName: {type: string, nullable: true, example: "Ioannis"}
+ *                     TeacherSurname: {type: string, nullable: true, example: "Giannakopoulos"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Course ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Course Not Found
  *         content:
@@ -204,8 +213,8 @@ router.get("/courses", authenticateToken, isSecretary, getCoursesController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Course not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -213,8 +222,8 @@ router.get("/courses", authenticateToken, isSecretary, getCoursesController);
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/courses/:courseID", authenticateToken, isSecretary,validateParameters, getCourseController);
 
@@ -251,35 +260,35 @@ router.get("/courses/:courseID", authenticateToken, isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Course edited"}
  *       400:
- *         description: Teacher Does Not Exist, Or Course Does Not Exist
+ *         description: Invalid Input, Or Teacher Does Not Exist, Or Course Does Not Exist
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Course ID Or Input Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -287,8 +296,8 @@ router.get("/courses/:courseID", authenticateToken, isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.patch("/courses/:courseID", authenticateToken, isSecretary, validateParameters, validateCourseInput, editCourseController);
 
@@ -314,35 +323,35 @@ router.patch("/courses/:courseID", authenticateToken, isSecretary, validateParam
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Course removed"}
  *       400:
- *         description: Cannot Delete Course With Enrolled Students
+ *         description: Invalid Input, Or Cannot Delete Course With Enrolled Students
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Course ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Course Not Found
  *         content:
@@ -350,8 +359,8 @@ router.patch("/courses/:courseID", authenticateToken, isSecretary, validateParam
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Course not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -359,8 +368,8 @@ router.patch("/courses/:courseID", authenticateToken, isSecretary, validateParam
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.delete("/courses/:courseID", authenticateToken, isSecretary, validateParameters, removeCourseController);
 

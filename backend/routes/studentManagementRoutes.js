@@ -37,27 +37,36 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
- *                 studentID: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Student added"}
+ *                 studentID: {type: string, example: "000006"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Student Credentials Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -65,8 +74,8 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.put("/students",authenticateToken,isSecretary,validateStudentAddCredentials,addStudentController);
 
@@ -92,36 +101,45 @@ router.put("/students",authenticateToken,isSecretary,validateStudentAddCredentia
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Students Retrieved"}
  *                 students:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       ID: {type: string}
- *                       Name: {type: string}
- *                       Surname: {type: string}
- *                       Semester: {type: integer}
- *                       EnrollmentYear: {type: integer}
+ *                       ID: {type: string, example: "000005"}
+ *                       Name: {type: string, example: "Vasileios"}
+ *                       Surname: {type: string, example: "Markakis"}
+ *                       Semester: {type: integer, example: 3}
+ *                       EnrollmentYear: {type: integer, example: 2023}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Year Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: No Students Found
  *         content:
@@ -129,8 +147,8 @@ router.put("/students",authenticateToken,isSecretary,validateStudentAddCredentia
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No students found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -138,8 +156,8 @@ router.put("/students",authenticateToken,isSecretary,validateStudentAddCredentia
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/students/year/:year",authenticateToken,isSecretary,validateYear,getStudentsController);
 
@@ -165,34 +183,43 @@ router.get("/students/year/:year",authenticateToken,isSecretary,validateYear,get
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Student Retrieved"}
  *                 student:
  *                   type: object
  *                   properties:
- *                     ID: {type: string}
- *                     Name: {type: string}
- *                     Surname: {type: string}
- *                     Semester: {type: integer}
- *                     EnrollmentYear: {type: integer}
+ *                     ID: {type: string, example: "000005"}
+ *                     Name: {type: string, example: "Vasileios"}
+ *                     Surname: {type: string, example: "Markakis"}
+ *                     Semester: {type: integer, example: 3}
+ *                     EnrollmentYear: {type: integer, example: 2023}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Student ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Student Not Found
  *         content:
@@ -200,8 +227,8 @@ router.get("/students/year/:year",authenticateToken,isSecretary,validateYear,get
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Student not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -209,8 +236,8 @@ router.get("/students/year/:year",authenticateToken,isSecretary,validateYear,get
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/students/:studentID",authenticateToken,isSecretary,validateParameters,getStudentController);
 
@@ -247,35 +274,35 @@ router.get("/students/:studentID",authenticateToken,isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Student edited"}
  *       400:
- *         description: Student Does Not Exist
+ *         description: Invalid Input, Or Student Does Not Exist
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Student ID Or Input Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -283,8 +310,8 @@ router.get("/students/:studentID",authenticateToken,isSecretary,validateParamete
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.patch("/students/:studentID",authenticateToken,isSecretary,validateParameters,validateEditStudentCredentials,editStudentController);
 
@@ -310,26 +337,35 @@ router.patch("/students/:studentID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Student removed"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found, Or Student ID Failed Validation
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       404:
  *         description: Student Not Found
  *         content:
@@ -337,8 +373,8 @@ router.patch("/students/:studentID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Student not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -346,8 +382,8 @@ router.patch("/students/:studentID",authenticateToken,isSecretary,validateParame
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.delete("/students/:studentID",authenticateToken,isSecretary,validateParameters,removeStudentController);
 
@@ -367,26 +403,26 @@ router.delete("/students/:studentID",authenticateToken,isSecretary,validateParam
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Semester advanced"}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -394,8 +430,8 @@ router.delete("/students/:studentID",authenticateToken,isSecretary,validateParam
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.post("/students",authenticateToken,isSecretary,advanceSemesterController)
 

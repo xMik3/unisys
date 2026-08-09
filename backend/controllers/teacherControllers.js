@@ -10,7 +10,7 @@ export async function getManagedCoursesController(req,res){
     return res.status(200).json({status: "success", message: "Managed Courses Retrieved", courses: courses});
   }
   catch(error){
-    return res.status(500).json({status: "error", message: "Database Error"});
+    return res.status(500).json({status: "error", message: "Database error"});
   }
 }
 
@@ -23,7 +23,7 @@ export async function getManagedStudentsController(req,res){
     return res.status(200).json({status: "success", message: "Managed Students Retrieved", students: students});
   }
   catch(error){
-    return res.status(500).json({status: "error", message: "Database Error"});
+    return res.status(500).json({status: "error", message: "Database error"});
   }
 }
 
@@ -49,7 +49,7 @@ export async function gradeStudentController(req,res){
     return res.status(200).json({status:"success", message: "Student graded" });
   }
   catch(error){
-    return res.status(500).json({status:"error", message: "Database Error" });
+    return res.status(500).json({status:"error", message: "Database error" });
   }
 }
 
