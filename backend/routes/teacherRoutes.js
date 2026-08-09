@@ -23,34 +23,34 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Managed Courses Retrieved"}
  *                 courses:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       ID: {type: string}
- *                       Name: {type: string }
- *                       Semester: {type: integer}
+ *                       ID: {type: string, example: "000013"}
+ *                       Name: {type: string, example: "Software Engineering" }
+ *                       Semester: {type: integer, example: 3}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -58,8 +58,8 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database Error"}
  */
 router.get("/managedCourses", authenticateToken, isTeacher, getManagedCoursesController);
 
@@ -79,40 +79,49 @@ router.get("/managedCourses", authenticateToken, isTeacher, getManagedCoursesCon
  *         description: Numeric course ID
  *     responses:
  *       200:
- *         description: Managed students retrieved
+ *         description: Managed Students Retrieved
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Managed Students Retrieved"}
  *                 students:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       ID: {type: string}
- *                       Name: {type: string}
- *                       Surname: {type: string}
+ *                       ID: {type: string, example: "000005"}
+ *                       Name: {type: string, example: "Vasileios"}
+ *                       Surname: {type: string, example: "Markakis"}
+ *       400:
+ *         description: Invalid Input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Invalid Input"}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
  *       500:
  *         description: Database Error
  *         content:
@@ -120,8 +129,8 @@ router.get("/managedCourses", authenticateToken, isTeacher, getManagedCoursesCon
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.get("/managedCourses/:courseID/students", authenticateToken, isTeacher, validateParameters, getManagedStudentsController);
 
@@ -164,35 +173,44 @@ router.get("/managedCourses/:courseID/students", authenticateToken, isTeacher, v
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "success"}
+ *                 message: {type: string, example: "Student graded"}
  *       400:
- *         description: Grade failed validation
+ *         description: Invalid Input, Or Incorrect Grade
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Incorrect Grade"}
  *       401:
- *         description: User Or Token Not Found
+ *         description: No Token Provided
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "No token provided"}
  *       403:
- *         description: Access Denied
+ *         description: Invalid Token, Or Access Denied
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Access denied"}
+ *       404:
+ *         description: Course Not Found, Or Student Not Enrolled In Course
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Course not found"}
  *       500:
  *         description: Database Error
  *         content:
@@ -200,8 +218,8 @@ router.get("/managedCourses/:courseID/students", authenticateToken, isTeacher, v
  *             schema:
  *               type: object
  *               properties:
- *                 status: {type: string}
- *                 message: {type: string}
+ *                 status: {type: string, example: "error"}
+ *                 message: {type: string, example: "Database error"}
  */
 router.patch("/managedCourses/:courseID/students/:studentID", authenticateToken, isTeacher, validateParameters, validateGrade, gradeStudentController);
 
