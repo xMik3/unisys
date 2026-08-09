@@ -2,6 +2,7 @@ import express from "express";
 
 import {validateLoginInput} from "../middleware/inputValidation.js";
 import {loginController} from "../controllers/authControllers.js";
+import {loginLimiter} from "../middleware/rateLimit.js";
 
 const router = express.Router();
 
@@ -60,6 +61,6 @@ const router = express.Router();
  *                 status: {type: string}
  *                 message: {type: string}
  */
-router.post("/login", validateLoginInput, loginController);
+router.post("/login", loginLimiter, validateLoginInput, loginController);
 
 export default router;

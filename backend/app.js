@@ -11,11 +11,15 @@ import secretaryStudentRoutes from "./routes/studentManagementRoutes.js";
 import secretaryTeacherRoutes from "./routes/teacherManagementRoutes.js";
 import swaggerRoutes from "./routes/swaggerRoutes.js";
 
+import {globalLimiter} from "./middleware/rateLimit.js";
+
 const allowedOrigins = (process.env.CORS_ORIGIN ?? "").split(",").map(origin => origin.trim()).filter(Boolean);
 
 const app = express();
+app.set("trust proxy",1);
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
+app.use(globalLimiter);
 
 app.use(swaggerRoutes);
 app.use(authRoutes);
