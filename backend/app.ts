@@ -13,6 +13,8 @@ import swaggerRoutes from "./routes/swaggerRoutes.js";
 
 import {globalLimiter} from "./middleware/rateLimit.js";
 
+import type {Request,Response} from "express";
+
 const allowedOrigins = (process.env.CORS_ORIGIN ?? "").split(",").map(origin => origin.trim()).filter(Boolean);
 
 const app = express();
@@ -29,7 +31,7 @@ app.use(secretaryCourseRoutes);
 app.use(secretaryStudentRoutes);
 app.use(secretaryTeacherRoutes);
 
-app.use((req,res)=>{
+app.use((req : Request,res : Response)=>{
     return res.status(404).json({error:"Route Doesnt Exist"});
 });
 
