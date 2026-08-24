@@ -2,7 +2,7 @@ import {getCourses,getCourse,addCourse,editCourse,removeCourse} from "../db/cour
 import {getTeacher} from "../db/teacherManagementQueries.js";
 
 import type {Request,Response} from "express";
-import type {CourseIDParam,Teacher} from "../types/general.js";
+import type {CourseIDParam} from "../types/general.js";
 import type {CreateCourseRequest,CreateCourseResponse,EditCourseRequest,EditCourseResponse,GetCourseResponse,GetCoursesResponse,RemoveCourseResponse} from "../types/secretary.js";
 
 export async function getCoursesController(req : Request,res : Response<GetCoursesResponse>){
@@ -45,7 +45,7 @@ export async function addCourseController(req : Request<{},{},CreateCourseReques
         else{
             // teacherManagementQueries is still JS, so its rows come back as the
             // raw QueryResult union. Drop the cast once step 8 ports it.
-            let teacher = await getTeacher(teacherID) as Teacher[];
+            let teacher = await getTeacher(teacherID);
             if(teacher.length===0) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
         }
 
@@ -70,7 +70,7 @@ export async function editCourseController(req : Request<CourseIDParam,{},EditCo
             teacherID = null;
         }
         else{
-            let teacher = await getTeacher(teacherID) as Teacher[];
+            let teacher = await getTeacher(teacherID);
             if(teacher.length===0) return res.status(400).json( {status: "error", message: "Teacher does not exist"} );
         }
 
