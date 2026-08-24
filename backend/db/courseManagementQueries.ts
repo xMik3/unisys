@@ -1,8 +1,10 @@
-import db from "./connection.js";
+import {pool} from "./connection.js";
+import type {ResultSetHeader, RowDataPacket} from "mysql2";
+import type {Course} from "../types/general.js";
 
 export async function getCourses(){
     try{
-        let courses = await db.promise().query(`
+        let courses = await pool.query<(Course & RowDataPacket)[]>(`
             SELECT LPAD(c.CID,6,"0") AS ID,
             c.NAME AS Name,
             c.SEMESTER AS Semester,
@@ -18,9 +20,9 @@ export async function getCourses(){
     }
 }
 
-export async function getCourse(courseID){
+export async function getCourse(courseID : string){
     try{
-        let course = await db.promise().query(`
+        let course = await pool.query<(Course & RowDataPacket)[]>(`
             SELECT LPAD(c.CID,6,"0") AS ID,
             c.NAME AS Name,
             c.SEMESTER AS Semester,
@@ -38,9 +40,9 @@ export async function getCourse(courseID){
     }
 }
 
-export async function addCourse(courseName,courseSemester,teacherID){
+export async function addCourse(courseName : string,courseSemester : number,teacherID : string | null){
     try{
-        const [result] = await db.promise().query(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,?);`,[courseName,courseSemester,teacherID]);
+        const [result] = await pool.query<ResultSetHeader>(`INSERT INTO Courses (NAME,SEMESTER,TID) VALUES(?,?,?);`,[courseName,courseSemester,teacherID]);
         return String(result.insertId).padStart(6,'0');
     }
     catch(error){
@@ -48,9 +50,9 @@ export async function addCourse(courseName,courseSemester,teacherID){
     }
 }
 
-export async function editCourse(courseName,courseSemester,teacherID,courseID){
+export async function editCourse(courseName : string,courseSemester : number,teacherID : string | null,courseID : string){
     try{
-        const [result] = await db.promise().query(
+        const [result] = await pool.query<ResultSetHeader>(
         `UPDATE Courses
         SET NAME=?, SEMESTER=?, TID=?
         WHERE CID=?;`,
@@ -63,12 +65,12 @@ export async function editCourse(courseName,courseSemester,teacherID,courseID){
     }
 }
 
-export async function removeCourse(courseID){
+export async function removeCourse(courseID : string){
     try{
-        let attends = await db.promise().query(`SELECT * FROM Attends WHERE CID=?;`,[courseID]);
+        let attends = await pool.query<RowDataPacket[]>(`SELECT * FROM Attends WHERE CID=?;`,[courseID]);
         if(attends[0].length>0) throw new Error("Cannot delete course with enrolled students");
-        
-        const [result] = await db.promise().query(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
+
+        const [result] = await pool.query<ResultSetHeader>(`DELETE FROM Courses WHERE CID=?;`,[courseID]);
         return result;
     }
     catch(error){

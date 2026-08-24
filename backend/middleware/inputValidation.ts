@@ -1,20 +1,21 @@
+import type {NextFunction, Request, Response} from "express";
 import {idSchema,courseSchema, gradingSchema, loginSchema, paramSchema,teacherCredentialsSchema,studentAddCredentialsSchema,studentEditCredentialsSchema} from "../validation/validationSchemas.js";
 
-export function validateLoginInput(req,res,next){
+export function validateLoginInput(req : Request,res : Response,next : NextFunction){
 
   const {error,value} = loginSchema.validate(req.body);
-  
+
   if(error) return res.status(400).json({ status:"error", message: "Invalid Input"});
 
   next();
 }
 
-export function validateParameters(req,res,next){
+export function validateParameters(req : Request,res : Response,next : NextFunction){
 
-  for(const element in req.params){
+  for(const element of Object.values(req.params)){
 
-    const {error,value} = idSchema.validate(req.params[element]);
-  
+    const {error,value} = idSchema.validate(element);
+
     if(error) return res.status(400).json({ status:"error", message: "Invalid Input"});
 
   }
@@ -22,7 +23,7 @@ export function validateParameters(req,res,next){
   next();
 }
 
-export function validateGrade(req,res,next){
+export function validateGrade(req : Request,res : Response,next : NextFunction){
 
   const {error,value} = gradingSchema.validate(req.body);
 
@@ -31,7 +32,7 @@ export function validateGrade(req,res,next){
   next();
 }
 
-export function validateCourseInput(req,res,next){
+export function validateCourseInput(req : Request,res : Response,next : NextFunction){
   const {error,value} = courseSchema.validate(req.body);
 
   if(error) return res.status(400).json({ status:"error", message: "Invalid Input"});
@@ -39,7 +40,7 @@ export function validateCourseInput(req,res,next){
   next();
 }
 
-export function validateTeacherCredentials(req,res,next){
+export function validateTeacherCredentials(req : Request,res : Response,next : NextFunction){
   const {error,value} = teacherCredentialsSchema.validate(req.body);
 
   if(error) return res.status(400).json({status:"error", message: "Invalid Input"});
@@ -47,7 +48,7 @@ export function validateTeacherCredentials(req,res,next){
   next();
 }
 
-export function validateStudentAddCredentials(req,res,next){
+export function validateStudentAddCredentials(req : Request,res : Response,next : NextFunction){
   const {error,value} = studentAddCredentialsSchema.validate(req.body);
 
   if(error) return res.status(400).json({status:"error", message: "Invalid Input"});
@@ -55,7 +56,7 @@ export function validateStudentAddCredentials(req,res,next){
   next();
 }
 
-export function validateEditStudentCredentials(req,res,next){
+export function validateEditStudentCredentials(req : Request,res : Response,next : NextFunction){
   const {error,value} = studentEditCredentialsSchema.validate(req.body);
 
   if(error) return res.status(400).json({status:"error", message: "Invalid Input"});
@@ -63,7 +64,7 @@ export function validateEditStudentCredentials(req,res,next){
   next();
 }
 
-export function validateYear(req,res,next){
+export function validateYear(req : Request,res : Response,next : NextFunction){
   const {error,value} = paramSchema.validate(req.params.year);
 
   if(error) return res.status(400).json({ status:"error", message: "Invalid Input"});
@@ -71,7 +72,7 @@ export function validateYear(req,res,next){
   next();
 }
 
-export function validateCourses(req,res,next){
+export function validateCourses(req : Request,res : Response,next : NextFunction){
   let courses = req.body.courses;
   if(!Array.isArray(courses) || courses.length===0) return res.status(400).json({ status:"error", message:"Invalid Input"});
 
