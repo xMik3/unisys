@@ -3,12 +3,9 @@ import fs from "fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Resolve relative to this module, not the cwd: the same code has to work
-// from the package root under tsx and from dist/ under `node dist/server.js`.
+
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-// routes/ is compiled into dist/, so it is always a sibling. docs/ is not
-// compiled, so it sits beside this file in dev but one level up from dist/.
 const docsDir = [path.join(here, "docs"), path.join(here, "..", "docs")]
   .find(candidate => fs.existsSync(path.join(candidate, "swaggerDescription.md")));
 
@@ -38,8 +35,8 @@ const options = {
     ],
     security: [{bearerAuth: []}],
   },
-  // Both extensions: .ts once the routes are ported, .js until then. tsc
-  // preserves the JSDoc blocks into dist/, so the compiled output still works.
+  // Both extensions: .ts is what tsx watches in dev, .js is what dist/ holds.
+  // tsc preserves the JSDoc blocks, so the compiled output still works.
   apis: [path.join(here, "routes/*.js"), path.join(here, "routes/*.ts")],
 };
 

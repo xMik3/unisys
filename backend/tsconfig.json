@@ -12,11 +12,6 @@
     "lib": ["es2023"],
     "types": ["node"],
 
-    // Incremental migration: existing .js keeps compiling and running
-    // untouched. Flip checkJs on (or just finish the port) to drop this.
-    "allowJs": true,
-    "checkJs": false,
-
     "sourceMap": true,
 
     // Stricter Typechecking
@@ -34,10 +29,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.js"],
-  // Half-ported files from the earlier attempt live in wip/, outside the
-  // build, on purpose. A .ts and .js of the same name cannot coexist:
-  // tsc resolves `import "./x.js"` to x.ts while Node resolves it to x.js.
-  // Move each one out of wip/ and delete its .js twin in the same step.
-  "exclude": ["node_modules", "dist", "wip"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

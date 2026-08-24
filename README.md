@@ -1,6 +1,6 @@
 # UniSys
 
-A REST API backend for a university management system, built with Express and MySQL. It supports three roles — Student, Teacher, and Secretary — each with their own set of permissions, and ships with interactive Swagger documentation.
+A REST API backend for a university management system, built with Typescript (migrated from JavaScript), Express and MySQL. It supports three roles — Student, Teacher, and Secretary — each with their own set of permissions, and ships with interactive Swagger documentation.
 
 ## Live Demo
 
@@ -19,9 +19,10 @@ Only Teacher and Student demo accounts are provided in the login dropdown (Secre
 
 ## Tech Stack
 
+- TypeScript
 - Node.js / Express
 - MySQL
-- JWT for for statelessness with role-based access control (roles are encoded inside the token)
+- JWT for statelessness with role-based access control (roles are encoded inside the token)
 - `bcrypt` for password hashing
 - `joi` for request validation
 - `swagger-jsdoc` + `swagger-ui-express` for API documentation
