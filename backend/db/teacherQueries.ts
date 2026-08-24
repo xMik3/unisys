@@ -1,8 +1,10 @@
-import db from "./connection.js";
+import {pool} from "./connection.js";
+import type {ResultSetHeader, RowDataPacket} from "mysql2";
+import type {ManagedCourse, ManagedStudent} from "../types/general.js";
 
-export async function getManagedCourses(teacherID){
+export async function getManagedCourses(teacherID : number){
     try{
-        let courses = await db.promise().query(`
+        let courses = await pool.query<(ManagedCourse & RowDataPacket)[]>(`
             SELECT LPAD(CID,6,"0") AS ID,
             NAME AS Name,
             SEMESTER AS Semester
@@ -15,9 +17,9 @@ export async function getManagedCourses(teacherID){
     }
 }
 
-export async function getManagedStudents(courseID,teacherID){
+export async function getManagedStudents(courseID : string,teacherID : number){
     try{
-        let students = await db.promise().query(
+        let students = await pool.query<(ManagedStudent & RowDataPacket)[]>(
             `SELECT LPAD(s.SID,6,"0") AS ID,
             s.NAME AS Name,
             s.SURNAME As Surname
@@ -32,19 +34,19 @@ export async function getManagedStudents(courseID,teacherID){
     catch(error){
         throw error;
     }
-}  
+}
 
-export async function gradeStudent(grade,studentID,courseID,teacherID){
+export async function gradeStudent(grade : number,studentID : string,courseID : string,teacherID : number){
     try{
-       const [result] = await db.promise().query(
+       const [result] = await pool.query<ResultSetHeader>(
         `UPDATE Attends a
         JOIN Courses c ON a.CID = c.CID
         SET a.GRADE = ?
         WHERE a.SID = ? AND a.CID = ? AND c.TID = ?;`,
         [grade,studentID,courseID,teacherID]
-       ); 
+       );
        return result;
     }catch(error){
-       throw error; 
+       throw error;
     }
 }
