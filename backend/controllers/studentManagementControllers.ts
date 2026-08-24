@@ -4,7 +4,11 @@ dotenv.config();
 
 import {getStudents,getStudent,addStudent,editStudent,removeStudent,advanceSemester} from "../db/studentManagementQueries.js";
 
-export async function getStudentsController(req,res){
+import type {Request,Response} from "express";
+import type {StudentIDParam,YearParam} from "../types/general.js";
+import type {AdvanceSemesterResponse,CreateStudentRequest,CreateStudentResponse,EditStudentRequest,EditStudentResponse,GetStudentResponse,GetStudentsResponse,RemoveStudentResponse} from "../types/secretary.js";
+
+export async function getStudentsController(req : Request<YearParam>,res : Response<GetStudentsResponse>){
 
     try{
         let year = req.params.year;
@@ -18,15 +22,15 @@ export async function getStudentsController(req,res){
 
 }
 
-export async function getStudentController(req,res){
-    
-    
+export async function getStudentController(req : Request<StudentIDParam>,res : Response<GetStudentResponse>){
+
+
     try{
         let studentID = req.params.studentID;
         let student = await getStudent(studentID);
 
         if(student.length==0) return res.status(404).json({status:"error", message:"Student not found"});
-        return res.status(200).json({status:"success", message:"Student Retrieved", student: student[0]});
+        return res.status(200).json({status:"success", message:"Student Retrieved", student: student[0]!});
     }
     catch(error){
         return res.status(500).json({status:"error", message : "Database error"});
@@ -34,15 +38,16 @@ export async function getStudentController(req,res){
 
 }
 
-export async function addStudentController(req,res){
+export async function addStudentController(req : Request<{},{},CreateStudentRequest>,res : Response<CreateStudentResponse>){
     let studentName = req.body.studentName;
     let studentSurname = req.body.studentSurname;
     let studentPWD = req.body.studentPWD;
     let studentEnrollmentYear = req.body.studentEnrollmentYear;
-    let studentSemester = 1+2*(parseInt(new Date().getFullYear()) - parseInt(studentEnrollmentYear));
+    // Both operands are already numbers; the original wrapped them in parseInt.
+    let studentSemester = 1+2*(new Date().getFullYear() - studentEnrollmentYear);
 
     try{
-        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
+        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS!));
 
         let studentID = await addStudent(studentName,studentSurname,hashedStudentPWD,studentEnrollmentYear,studentSemester);
         return res.status(200).json({ status: "success", message: "Student added", studentID: studentID });
@@ -53,14 +58,14 @@ export async function addStudentController(req,res){
 
 }
 
-export async function editStudentController(req,res){
+export async function editStudentController(req : Request<StudentIDParam,{},EditStudentRequest>,res : Response<EditStudentResponse>){
     let studentID = req.params.studentID;
     let studentName = req.body.studentName;
     let studentSurname = req.body.studentSurname;
     let studentPWD = req.body.studentPWD;
 
     try{
-        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS));
+        let hashedStudentPWD = await bcrypt.hash(studentPWD,parseInt(process.env.SALT_ROUNDS!));
 
         let result = await editStudent(studentName,studentSurname,hashedStudentPWD,studentID);
         if(result.affectedRows==0) return res.status(400).json({status: "error", message : "Student does not exist"} );
@@ -72,9 +77,9 @@ export async function editStudentController(req,res){
     }
 }
 
-export async function removeStudentController(req,res){
+export async function removeStudentController(req : Request<StudentIDParam>,res : Response<RemoveStudentResponse>){
     let studentID = req.params.studentID;
-    
+
     try{
         let result = await removeStudent(studentID);
         if(result.affectedRows==0) return res.status(404).json({status :"error", message: "Student not found" });
@@ -86,7 +91,7 @@ export async function removeStudentController(req,res){
     }
 }
 
-export async function advanceSemesterController(req,res){
+export async function advanceSemesterController(req : Request,res : Response<AdvanceSemesterResponse>){
     try{
         await advanceSemester();
         return res.status(200).json({status: "success", message : "Semester advanced"});
