@@ -36,16 +36,6 @@ export async function getStudent(studentID){
     }
 }
 
-export async function getStudentPassword(studentID){
-    try{
-        let password = await db.promise().query(`SELECT PASSWORD FROM Students WHERE SID=?;`,[studentID]);
-        return password[0][0];
-    }
-    catch(error){
-        throw error;
-    }
-}
-
 export async function addStudent(studentName,studentSurname,studentPWD,studentEnrollmentYear,studentSemester){
     try{
         const [result] = await db.promise().query(`INSERT INTO Students (NAME,SURNAME,SEMESTER,PASSWORD,ENROLLMENTYEAR) VALUES(?,?,?,?,?);`,[studentName,studentSurname,studentSemester,studentPWD,studentEnrollmentYear]);
