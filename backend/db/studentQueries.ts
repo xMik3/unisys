@@ -1,8 +1,11 @@
-import db from "./connection.js";
+import {pool} from "./connection.js";
+import type {ResultSetHeader, RowDataPacket} from "mysql2";
+import type {AvailableCourse, RegisteredCourse} from "../types/general.js";
+import type {RegisteredCoursesCount} from "../types/student.js";
 
-export async function getRegisteredCourses(studentID){
+export async function getRegisteredCourses(studentID : number){
     try{
-        let courses = await db.promise().query(
+        let courses = await pool.query<(RegisteredCourse & RowDataPacket)[]>(
             `SELECT LPAD(c.CID,6,"0") AS ID,
             c.NAME AS Name,
             c.SEMESTER AS Semester,
@@ -23,9 +26,9 @@ export async function getRegisteredCourses(studentID){
     }
 }
 
-export async function getAvailableCourses(studentID){
+export async function getAvailableCourses(studentID : number){
     try{
-        let courses = await db.promise().query(
+        let courses = await pool.query<(AvailableCourse & RowDataPacket)[]>(
             `SELECT LPAD(CID,6,"0") AS ID,
             NAME AS Name,
             SEMESTER AS Semester
@@ -47,20 +50,11 @@ export async function getAvailableCourses(studentID){
     }
 }
 
-export async function registerCourses(studentID,courses){
+export async function registerCourses(studentID : number,courses : string[]){
     try{
         const values = courses.map(course => [studentID, course, null]);
 
-        return await db.promise().query(`INSERT INTO Attends (SID, CID, GRADE) VALUES ?;`,[values]);
-    }
-    catch(error){
-        throw error;
-    }
-}
-
-export async function unregisterCourse(studentID,courseID){
-    try{
-        const [result] = await db.promise().query(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND (GRADE IS NULL OR GRADE<5);`,[studentID,courseID]);
+        const [result] = await pool.query<ResultSetHeader>(`INSERT INTO Attends (SID, CID, GRADE) VALUES ?;`,[values]);
         return result;
     }
     catch(error){
@@ -68,31 +62,27 @@ export async function unregisterCourse(studentID,courseID){
     }
 }
 
-export async function getSemesters(studentID,courseID){
+export async function unregisterCourse(studentID : number,courseID : string){
     try{
-        let semesters =  await db.promise().query(
-          `SELECT s.SEMESTER as studentSemester, c.SEMESTER as courseSemester
-          FROM Students s, Courses c
-          WHERE s.SID=? AND c.CID=?;`,
-          [studentID,courseID]
-        );
-        return semesters[0][0];
+        const [result] = await pool.query<ResultSetHeader>(`DELETE FROM Attends WHERE SID = ? AND CID = ? AND (GRADE IS NULL OR GRADE<5);`,[studentID,courseID]);
+        return result;
     }
     catch(error){
         throw error;
     }
 }
 
-export async function getRegisteredCoursesCount(studentID){
+export async function getRegisteredCoursesCount(studentID : number){
     try{
-        let count = await db.promise().query(
+        let count = await pool.query<(RegisteredCoursesCount & RowDataPacket)[]>(
             `SELECT COUNT(CID) AS registeredCourses
-            FROM Attends 
+            FROM Attends
             WHERE SID=? AND (GRADE IS NULL OR GRADE < 5);
             `,
             [studentID]
         );
-        return count[0][0];
+        // COUNT over no rows still returns one row, so this is never undefined.
+        return count[0][0]!;
     }
     catch(error){
         throw error;

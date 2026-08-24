@@ -28,12 +28,6 @@ export type RegisteredCoursesCount = {
     registeredCourses : number;
 }
 
-export type Semesters = {
-    studentSemester : number;
-    courseSemester : number;
-}
-
-
 //register response
 export type RegisterCoursesResponse = ApiResponse;
 

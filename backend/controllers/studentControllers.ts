@@ -1,19 +1,24 @@
 import {getRegisteredCourses,getRegisteredCoursesCount,registerCourses, unregisterCourse,getAvailableCourses} from "../db/studentQueries.js"
 
-export async function getRegisteredCoursesController(req,res){
-  let studentID = req.userID;
+import type {Request,Response} from "express";
+import type {QueryError} from "mysql2";
+import type {CourseIDParam} from "../types/general.js";
+import type {GetAvailableCoursesResponse,GetRegisteredCoursesResponse,RegisterCoursesRequest,RegisterCoursesResponse,UnregisterCourseResponse} from "../types/student.js";
+
+export async function getRegisteredCoursesController(req : Request,res : Response<GetRegisteredCoursesResponse>){
+  let studentID = req.userID!;
 
   try{
     let courses = await getRegisteredCourses(studentID);
-    return res.status(200).json({status: "success", message:"Registered Courses Retrieved", courses:courses}); 
+    return res.status(200).json({status: "success", message:"Registered Courses Retrieved", courses:courses});
   }
   catch(error){
     return res.status(500).json({status: "error", message: "Database error"});
   }
 }
 
-export async function getAvailableCoursesController(req,res){
-  let studentID = req.userID;
+export async function getAvailableCoursesController(req : Request,res : Response<GetAvailableCoursesResponse>){
+  let studentID = req.userID!;
 
   try{
     let courses = await getAvailableCourses(studentID);
@@ -25,9 +30,9 @@ export async function getAvailableCoursesController(req,res){
 
 }
 
-export async function registerCoursesController(req,res){
-  let studentID = req.userID;
-  let courses = req.courses;
+export async function registerCoursesController(req : Request<{},{},RegisterCoursesRequest>,res : Response<RegisterCoursesResponse>){
+  let studentID = req.userID!;
+  let courses = req.courses!;
 
   try{
     let registeredCoursesCount = await getRegisteredCoursesCount(studentID);
@@ -45,16 +50,17 @@ export async function registerCoursesController(req,res){
     return res.status(200).json({status: "success", message : "Registered To Courses"});
   }
   catch(error){
+    const dbError = error as QueryError;
 
-    if(error.code == "ER_DUP_ENTRY") return res.status(400).json({status: "error", message: "Student already registered to course"});
+    if(dbError.code == "ER_DUP_ENTRY") return res.status(400).json({status: "error", message: "Student already registered to course"});
 
     return res.status(500).json({status: "error", message : "Database error" });
   }
 }
 
-export async function removeCourseController(req,res){
+export async function removeCourseController(req : Request<CourseIDParam>,res : Response<UnregisterCourseResponse>){
   let courseID = req.params.courseID;
-  let studentID = req.userID;
+  let studentID = req.userID!;
 
   try{
     let result = await unregisterCourse(studentID,courseID);
