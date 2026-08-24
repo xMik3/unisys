@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    // File Layout: sources live at the package root, output in dist/.
+    // dist/ must stay excluded below or it becomes its own input.
+    "rootDir": ".",
+    "outDir": "./dist",
+
+    // Environment: Node 20, native ESM. Imports already carry `.js`
+    // extensions, which is exactly what nodenext resolution wants.
+    "module": "nodenext",
+    "target": "es2022",
+    "lib": ["es2023"],
+    "types": ["node"],
+
+    "sourceMap": true,
+
+    // Stricter Typechecking
+    "strict": true,
+    // Adds `| undefined` to every rows[0] access, which is precisely the
+    // bug class sitting in the db layer today.
+    "noUncheckedIndexedAccess": true,
+
+    // Recommended
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

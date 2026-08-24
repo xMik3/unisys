@@ -2,9 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "REST endpoint for the university management system.",
-  "main": "index.js",
+  "main": "dist/server.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "start": "node dist/server.js",
+    "dev": "tsx watch server.ts",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "xMik3",
@@ -18,8 +23,18 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
-    "node-cron": "^4.2.1",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.2.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
   }
 }

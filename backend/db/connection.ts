@@ -10,4 +10,6 @@ let db = mysql.createPool({
     flags:['FOUND_ROWS']
 });
 
+export const pool = db.promise();
+
 export default db;
