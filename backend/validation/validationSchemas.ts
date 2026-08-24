@@ -8,7 +8,7 @@ const userTypeSchema = joi.string().valid("Student", "Teacher", "Secretary").req
 
 const nameSchema = joi.string().pattern(/^[a-zA-Z ]+$/).min(4).max(30).required();
 
-const yearSchema = joi.number().integer().positive().min(2000).max(parseInt(new Date().getFullYear())).required();
+const yearSchema = joi.number().integer().positive().min(2000).max(new Date().getFullYear()).required();
 
 const semesterSchema = joi.number().integer().positive().max(12).required();
 
@@ -50,4 +50,3 @@ export const courseSchema = joi.object({
   courseSemester: semesterSchema,
   teacherID: idSchema.allow("NULL")
 });
-
