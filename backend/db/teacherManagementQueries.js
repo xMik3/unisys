@@ -30,16 +30,6 @@ export async function getTeacher(teacherID){
     }
 }
 
-export async function getTeacherPassword(teacherID){
-    try{
-        let password = await db.promise().query(`SELECT PASSWORD FROM Teachers WHERE TID=?;`,[teacherID]);
-        return password[0][0];
-    }
-    catch(error){
-        throw error;
-    }
-}
-
 export async function addTeacher(teacherName,teacherSurname,teacherPWD){
     try{
         const [result] = await db.promise().query(`INSERT INTO Teachers (NAME,SURNAME,PASSWORD) VALUES(?,?,?);`,[teacherName,teacherSurname,teacherPWD]);
